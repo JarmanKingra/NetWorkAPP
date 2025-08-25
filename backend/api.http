@@ -1,0 +1,54 @@
+POST http://localhost:3001/register HTTP/1.1
+content-type: application/json
+
+{
+  "username": "jarman123",
+  "password": "mypassword",
+  "email": "jarman@example.com",
+  "name": "Jarman Kingra",
+  "token": "someRandomTokenString"
+}
+
+
+###
+POST  http://localhost:3001/login HTTP/1.1
+content-type: application/json
+
+{
+  "password": "mypassword",
+  "email": "jarman@example.com"
+}
+
+
+###
+POST  http://localhost:3001/get_user_profile HTTP/1.1
+content-type: application/json
+
+{
+  "token": "edb7971ba35238d4b958da9fe6a45e6a91198238996800b9713355f9de875ac9"
+}
+
+
+###
+POST  http://localhost:3001/update_profile_data HTTP/1.1
+content-type: application/json
+
+{
+  "token": "edb7971ba35238d4b958da9fe6a45e6a91198238996800b9713355f9de875ac9",
+  "bio": "Upcoming SDE",
+  "currentPost": "CTO",
+  "pastWork": [
+    {
+      "company": "Google",
+      "position": "CTO",
+      "years": "4"
+    }
+  ],
+  "education": [
+    {
+      "school": "CU",
+      "degree": "BCA",
+      "fieldOfStudy": "Computer Science"
+    }
+  ]
+}
