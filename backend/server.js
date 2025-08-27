@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json()); // so you can read JSON bodies
 app.use(postroutes);     
 app.use(userroutes);
+app.use(express.static("upload"));
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3001;
