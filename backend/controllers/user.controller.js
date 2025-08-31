@@ -90,7 +90,7 @@ const login = async (req, res) => {
 
     await user.save();
 
-    return res.json({ message: "User logged in", token });
+    return res.json({ message: "User logged in", token: token });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
