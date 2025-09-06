@@ -139,9 +139,10 @@ const updateUserProfile = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token } = req.query;
+    console.log(`token :  ${token}`);
     const user = await User.findOne({ token: token });
-    if (!user) {
+    if (!user) { 
       return res.status(400).json({ message: "user not found" });
     }
 
@@ -149,6 +150,8 @@ const getUserProfile = async (req, res) => {
       "userId",
       "name username email profilePicture"
     );
+ 
+    console.log(user)
 
     return res.json(userProfile);
   } catch (error) {

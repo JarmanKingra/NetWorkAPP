@@ -33,7 +33,7 @@ router
 router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/update_user").post(updateUserProfile);
-router.route("/get_user_profile").post(getUserProfile);
+router.route("/get_user_profile").get(getUserProfile);
 router.route("/update_profile_data").post(updateProfileData);
 router.route("/donwloadResume").get(downloadProfile);
 router.route("/send_connetion_request").post(sendConnectionRequest);
