@@ -1,9 +1,16 @@
 import React from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+
+
+
 
 export default function NavBarComponent() {
   const router = useRouter();
+  const authState = useSelector((state) => state?.auth ?? {});
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.container}>
       <nav className={styles.navBar}>
@@ -14,8 +21,22 @@ export default function NavBarComponent() {
           }}
         >
           NetworkAPP
-        </h1>
+        </h1> 
         <div className={styles.navBarOptionContainer}>
+
+          {authState.profileFetched && <div>
+            <div style={{display: "flex", gap: "1.2rem"}}>
+              <p>Hey, {authState.user.userId.name}</p>
+              <p style={{fontWeight: "bold", cursor: "pointer"}} pointe>Profile</p>
+              <p onClick={() => {localStorage.removeItem("token"),
+               router.push("/login")
+               dispatch(reset())
+              }}
+              style={{fontWeight: "bold", cursor: "pointer"}} pointe>LogOut</p>
+            </div>
+            </div>}
+          
+          {!authState.profileFetched && 
           <div
             onClick={() => {
               router.push("/login");
@@ -24,6 +45,9 @@ export default function NavBarComponent() {
           >
             Be a part
           </div>
+          }
+          
+          
         </div>
       </nav>
     </div>

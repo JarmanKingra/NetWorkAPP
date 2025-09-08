@@ -159,6 +159,18 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const getAllUserProfiles = async(req, res) => {
+  try {
+    const profiles = await Profile.find().populate(
+      "userId",
+      "name username email profilePicture"
+    )
+    return res.json(profiles);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 const updateProfileData = async (req, res) => {
   try {
     const { token, ...newProfileData } = req.body;
@@ -302,6 +314,7 @@ module.exports = {
   uploadProfilePicture,
   updateUserProfile,
   getUserProfile,
+  getAllUserProfiles,
   updateProfileData,
   downloadProfile,
   sendConnectionRequest,

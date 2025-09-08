@@ -10,7 +10,8 @@ const {
   sendConnectionRequest,
   getMyConnectionsRequests,
   whatAreMyConnection,
-  acceptConnectionRequest
+  acceptConnectionRequest,
+  getAllUserProfiles
 } = require("../controllers/user.controller");
 const multer = require("multer");
 
@@ -34,6 +35,7 @@ router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/update_user").post(updateUserProfile);
 router.route("/get_user_profile").get(getUserProfile);
+router.route("/get_All_user_profiles").get(getAllUserProfiles);
 router.route("/update_profile_data").post(updateProfileData);
 router.route("/donwloadResume").get(downloadProfile);
 router.route("/send_connetion_request").post(sendConnectionRequest);

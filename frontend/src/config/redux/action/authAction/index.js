@@ -62,3 +62,32 @@ export const getAboutUser = createAsyncThunk(
     }
   }
 )
+
+export const getAllUsers = createAsyncThunk(
+  "/getAllUsers",
+  async(_, thunkAPI) => {
+    try {
+      const response = await clientServer.get("/get_All_user_profiles");
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+)
+
+export const deletePost = createAsyncThunk(
+  "post/deletePost",
+  async(com, thunkAPI) => {
+    try {
+      const response = await clientServer.delete("/deletePost", {
+        data: {
+          token: localStorage.getItem('token'),
+          postId:  com.postId
+        }
+      })
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+)

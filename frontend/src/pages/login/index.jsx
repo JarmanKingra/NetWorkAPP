@@ -97,14 +97,14 @@ function loginComponent() {
           </div>
           <div className={styles.cardContainer_right}>
             <div >
-              {!userLoginMethod ? <p>Already have a account?</p> : <p>Don't have a account? Sign Up herek</p>}
+              {!userLoginMethod ? <p>Already have a account?</p> : <p>Don't have a account?</p>}
               <div style={{marginTop: "10px", textAlign: "center"}}
                 onClick={() => {
                   setuserLoginMethod(!userLoginMethod);
                 }}
                 className={styles.buttonWithOutline}
               >
-                <p>{userLoginMethod ? "SignUp" : "SignIn"}</p>
+                <p style={{color: "black"}}>{userLoginMethod ? "SignUp" : "SignIn"}</p>
               </div>
             </div>
           </div>

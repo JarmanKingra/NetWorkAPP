@@ -11,7 +11,8 @@ const storage = multer.diskStorage({
     cb(null, "upload");
   },
   filename: (req, file, cb) => {  
-    cb(null, file.originalname);
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
   },
 });
 
@@ -21,7 +22,7 @@ router.route("/").get(activeCheck);
 
 router.route("/post").post(upload.single('media'), createPost);
 router.route("/getAllPost").get(getAllPosts);
-router.route("/deletePost").post(deletePost);
+router.route("/deletePost").delete(deletePost);
 router.route("/comment").post(comment);
 router.route("/get_comments_by_post").get(getCommentByPosts);
 router.route("/delete_comments").delete(deleteCommentOfUser);

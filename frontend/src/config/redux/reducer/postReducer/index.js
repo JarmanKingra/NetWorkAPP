@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { reset } from "../authReducer";
-import { getAllPosts } from "../../action/postAction";
+import { getAllPosts, getComments } from "../../action/postAction";
 
 const initialState = {
     posts: [],
@@ -31,14 +31,17 @@ const postSlice = createSlice({
                 state.isLoading = false
                 state.isError = false
                 state.postsFetched = true
-                state.posts = action.payload.posts
+                state.posts = action.payload.posts.reverse()
             })
             .addCase(getAllPosts.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
             })
+            .addCase(getComments.fulfilled, (state, action) => {
+                state.postId = action.payload.postId
+            })
     }
 })
-
+export const {resetPostId} = postSlice.actions;
 export default postSlice.reducer

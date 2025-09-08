@@ -12,3 +12,71 @@ export const getAllPosts = createAsyncThunk(
         }
     }
 )
+
+export const createPost = createAsyncThunk(
+    "post/createPost",
+    async (userData, thunkAPI) => {
+        const {file, body} = userData;
+        try {
+            const formData = new FormData();
+
+            formData.append('token', localStorage.getItem('token'))
+            formData.append('body', body)
+            formData.append('media', file)
+            
+            const response = await clientServer.post("/post", formData, {
+                headers: {
+                    'Content-Type': "multipart/form-data"
+                }
+            });
+            if(response.status == 200){
+            return thunkAPI.fulfillWithValue("Post Uploaded")
+            }else{
+                return thunkAPI.fulfillWithValue("Post Upload Fail")
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const incrementLikes = createAsyncThunk(
+    "post/incrementLikes",
+    async(gotData, thunkAPI) => {
+        try {
+            const response = await clientServer.post("/incriment_like", {
+                
+                    postId: gotData.postId
+                
+            })
+
+        if(response.status == 200){
+            return thunkAPI.fulfillWithValue("Liked")
+        } else {
+            return thunkAPI.rejectWithValue("Not Liked")
+        }
+        } catch (error) {
+              return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const getComments = createAsyncThunk(
+    "/getAllComments",
+    async(postData, thunkAPI) => {
+        try {
+            const response = clientServer.get("get_comments_by_post", {
+                params: {
+                    postId: postData.postId
+                }
+
+            })
+            return thunkAPI.fulfillWithValue({
+                comments: response.data,
+                postId: postData.postId
+            })
+        } catch (error) {
+            return thunkAPI.rejectWithValue("something went wrong");
+        }
+    }
+)

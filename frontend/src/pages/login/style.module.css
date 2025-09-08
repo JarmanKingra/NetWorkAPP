@@ -24,16 +24,20 @@
 }
 
 .cardleft_heading {
-  font-weight: bold;
+  font-weight: 500;
   font-size: 1.8rem;
 }
 
 .cardContainer_right {
   flex: 0.4;
-  background: #4979a7;
+  background: #1b3a58;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cardContainer_right div p {
+  color: white;
 }
 
 .inputField {
