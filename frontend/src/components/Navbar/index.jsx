@@ -2,13 +2,14 @@ import React from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import { reset } from "@/config/redux/reducer/authReducer";
 
 
 
 
 export default function NavBarComponent() {
   const router = useRouter();
-  const authState = useSelector((state) => state?.auth ?? {});
+  const authState = useSelector((state) => state.auth); //state?.auth ?? {}
   const dispatch = useDispatch();
 
   return (
@@ -28,18 +29,22 @@ export default function NavBarComponent() {
             <div style={{display: "flex", gap: "1.2rem"}}>
               <p>Hey, {authState.user.userId.name}</p>
               <p style={{fontWeight: "bold", cursor: "pointer"}} pointe>Profile</p>
-              <p onClick={() => {localStorage.removeItem("token"),
-               router.push("/login")
+              <p onClick={ () => {localStorage.removeItem("token"),
                dispatch(reset())
+               router.push("/login")
+               
               }}
               style={{fontWeight: "bold", cursor: "pointer"}} pointe>LogOut</p>
             </div>
             </div>}
           
-          {!authState.profileFetched && 
+          {!authState.loggedIn && 
           <div
             onClick={() => {
-              router.push("/login");
+             
+                router.push("/login");
+              
+              
             }}
             className={styles.buttonJoin}
           >

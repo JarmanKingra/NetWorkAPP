@@ -17,7 +17,7 @@ const postSlice = createSlice({
     name: "posts",
     initialState,
     reducers: {
-        reset: () => intitialState,
+        reset: () => initialState,
         resetPostId: (state) => {
             state.postId = ""
         }
@@ -40,6 +40,7 @@ const postSlice = createSlice({
             })
             .addCase(getComments.fulfilled, (state, action) => {
                 state.postId = action.payload.postId
+                state.comments = action.payload.comments
             })
     }
 })

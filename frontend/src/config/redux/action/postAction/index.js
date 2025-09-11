@@ -65,7 +65,7 @@ export const getComments = createAsyncThunk(
     "/getAllComments",
     async(postData, thunkAPI) => {
         try {
-            const response = clientServer.get("get_comments_by_post", {
+            const response = await clientServer.get("/get_comments_by_post", {
                 params: {
                     postId: postData.postId
                 }
@@ -80,3 +80,21 @@ export const getComments = createAsyncThunk(
         }
     }
 )
+
+export const postComment = createAsyncThunk(
+    "post/Comment",
+    async(conmmentData, thunkAPI) => {
+        try {
+            const response = await  clientServer.post("/comment", {
+                post_Id: conmmentData.postId,
+                token: localStorage.getItem('token'),
+                commentBody: conmmentData.body,
+            })
+
+            return thunkAPI.fulfillWithValue(response.data)
+        } catch (error) {
+             return thunkAPI.rejectWithValue("something went wrong");
+        }
+    }
+)
+

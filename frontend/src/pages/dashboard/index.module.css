@@ -152,3 +152,37 @@
   padding: 1.4rem;
 }
 
+.postCommentContainer {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 1.2rem;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.postCommentContainer > input {
+  flex: 0.9;
+  padding-inline: 1.5rem;
+  padding-block: 1.2rem;
+  border: none;
+  background-color: rgb(228, 228, 228);
+  border-radius: 10px;
+}
+
+.postCommentContainer_commentBtn {
+  flex: 0.1;
+  width: fit-content;
+  padding: 1.2rem;
+  background: rgb(145, 114, 56);
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
+.singleComment_profileContainer img{
+  height: 2rem;
+}

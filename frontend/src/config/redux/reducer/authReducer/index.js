@@ -2,8 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getAboutUser,
   getAllUsers,
+  getConnetionRequest,
   loginUser,
   registerUser,
+  whatAreMyConnection,
 } from "../../action/authAction";
 
 const initialState = {
@@ -19,16 +21,24 @@ const initialState = {
   connectionRequests: [],
   all_users: [],
   all_profiles_fetched: false,
-  }
+};
 
-  const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers : {
-      reset: () => initialState,
-      handleLoginUser: (state) =>{
-        state.message = "hello"
-      },
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    reset: () => {
+      return {
+        ...initialState,
+        loggedIn: false,
+        TokenIsThere: false,
+        profileFetched: false,
+        user: undefined,
+      };
+    },
+    handleLoginUser: (state) => {
+      state.message = "hello";
+    },
     emptyMessage: (state) => {
       state.message = "";
     },
@@ -64,7 +74,6 @@ const initialState = {
         (state.isLoading = false),
           (state.isError = false),
           (state.isSuccess = true),
-          (state.loggedIn = true),
           (state.message = {
             message: "Registration is SuccessFull, please SignIn",
           });
@@ -81,11 +90,23 @@ const initialState = {
           (state.user = action.payload);
       })
       .addCase(getAllUsers.fulfilled, (state, action) => {
-        state.isLoading = false,
-        state.isError = false,
-        state.all_profiles_fetched = true,
-        state.all_users = action.payload
+        (state.isLoading = false),
+          (state.isError = false),
+          (state.all_profiles_fetched = true),
+          (state.all_users = action.payload);
       })
+      .addCase(getConnetionRequest.fulfilled, (state, action) => {
+        state.connections = action.payload;
+      })
+      .addCase(getConnetionRequest.rejected, (state, action) => {
+        state.message = action.payload;
+      })
+      .addCase(whatAreMyConnection.fulfilled, (state, action) => {
+        state.connectionRequests = action.payload;
+      })
+      .addCase(whatAreMyConnection.rejected, (state, action) => {
+        state.message = action.payload;
+      });
   },
 });
 

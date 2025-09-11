@@ -22,23 +22,23 @@ function loginComponent() {
   },[authState.loggedIn]);
 
   useEffect(() => {
-    if(localStorage.getItem("token")){
+    if(authState.loggedIn){
       router.push("/dashboard");
     }
-  },[])
+  },[authState.loggedIn])
 
   useEffect(() => {
     dispatch(emptyMessage());
   }, [userLoginMethod]);
 
-  const handleRegister = () => {
-    dispatch(registerUser({ username, name, password, email }));
+  const handleRegister =async () => {
+    await dispatch(registerUser({ username, name, password, email }));
     setuserLoginMethod(true);  // used to redirect to login 
 };
 
-  const handleLogin = () => {
+  const handleLogin = async() => {
     console.log("login..");
-    dispatch(loginUser({email, password}));
+    await dispatch(loginUser({email, password}));
   }
   return (
     <UserLayout>

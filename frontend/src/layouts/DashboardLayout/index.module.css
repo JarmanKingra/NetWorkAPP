@@ -19,6 +19,7 @@
   flex-direction: column;
   gap: 1.2rem;
   align-items: center;
+  border-right: 1px solid black;
 }
 
 .sideBarOption {
@@ -41,3 +42,13 @@
   height: 1em;
   min-width: fit-content;
 }
+
+.homeContainer_feedContainer{
+  padding-left: 1rem;
+}
+
+.homeContainer_extraContainer{
+  border-left: 1px solid black;
+  padding-left: 1rem;
+}
+

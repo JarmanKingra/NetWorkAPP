@@ -210,7 +210,7 @@ const sendConnectionRequest = async (req, res) => {
     const user = await User.findOne({ token });
 
     if (!user) {
-      return res.status(400).json({ message: "user not found" });
+      return res.status(400).json({ message: "userr not found" });
     }
 
     const connectionUser = await User.findOne({ _id: connectionId });
@@ -222,7 +222,7 @@ const sendConnectionRequest = async (req, res) => {
     const existingRequest = await ConnectionRequest.findOne({
       userId: user._id,
       connectionId: connectionUser._id,
-    });
+    })
 
     if (existingRequest) {
       return res.status(400).json({ message: "Request ALready sent" });
@@ -242,7 +242,7 @@ const sendConnectionRequest = async (req, res) => {
 };
 
 const getMyConnectionsRequests = async (req, res) => {
-  const { token } = req.body;
+  const { token } = req.query;
 
   try {
     const user = await User.findOne({ token });

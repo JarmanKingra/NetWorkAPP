@@ -1,6 +1,7 @@
 const Comment = require("../models/comments.model");
 const Post = require("../models/posts.model");
 const User = require("../models/users.model");
+const Profile = require("../models/profile.model")
 
 const activeCheck = async (req, res) => {
   return res.status(200).json({ message: "Running" });
@@ -102,7 +103,10 @@ const getCommentByPosts = async(req, res) => {
             return res.status(404).json({message: "Post Not Found"});
         }
 
-        return res.json({comments: post.comments});
+        const comment = await Comment.find({postId: postId})
+        .populate('userId', 'username name profilePicture');
+
+        return res.json(comment.reverse());
     } catch (error) {
         
     }
@@ -149,4 +153,25 @@ const incrementLikes = async(req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
-module.exports = { activeCheck, createPost, getAllPosts, deletePost, comment, getCommentByPosts, deleteCommentOfUser, incrementLikes };
+
+const get_user_profile_user_based_on_username = async(req, res) => {
+
+  const { username } = req.query;
+  try {
+    const user = await User.findOne({
+      username
+    })
+
+    if(!user){
+      return res.status(404).json({message: "User not found"})
+    }
+
+    const userProfile = await Profile.findOne({userId: user._id})
+    .populate('userId', 'name username email profilePicture');
+
+    return res.json({"profile": userProfile})
+  } catch (error) {
+     return res.status(500).json({ message: error.message });
+  }
+}
+module.exports = { activeCheck, createPost, getAllPosts, deletePost, comment, getCommentByPosts, deleteCommentOfUser, incrementLikes, get_user_profile_user_based_on_username };
