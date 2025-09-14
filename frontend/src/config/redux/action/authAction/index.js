@@ -104,7 +104,7 @@ export const sendConnectionRequest = createAsyncThunk(
         
       })
 
-      thunkAPI.dispatch(getConnetionRequest({ token: user.token }))
+      thunkAPI.dispatch(getConnetionRequest({token: user.token}));
 
       return thunkAPI.fulfillWithValue(response.data)
       
@@ -114,14 +114,14 @@ export const sendConnectionRequest = createAsyncThunk(
   }
 )
 
-export const getConnetionRequest = createAsyncThunk(
+export const getConnetionRequest = createAsyncThunk(  // to whom whom i sent 
   "/getconnectionRequest", 
-  async(_, thunkAPI) => {
+  async(user, thunkAPI) => {
     try {
       
       const response = await clientServer.get("/get_My_Connection_Requests", {
         params: {
-          token: localStorage.getItem('token')
+          token: user.token
         }
       })
 
@@ -133,21 +133,21 @@ export const getConnetionRequest = createAsyncThunk(
   }
 )
 
-export const whatAreMyConnection = createAsyncThunk(
+export const whatAreMyConnection = createAsyncThunk( // who who sent me
   "whatAremyconnections", 
-  async(_, thunkAPI) => {
+  async(user, thunkAPI) => {
     try {
       
       const response =  await clientServer.get("/what_Are_My_Connection", {
         params: {
-          token: localStorage.getItem('token')
+          token: user.token
         }
       })
 
       return thunkAPI.fulfillWithValue(response.data.connections);
 
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 )
@@ -157,13 +157,16 @@ export const acceptConnectionRequest = createAsyncThunk(
   async(user, thunkAPI) => {
     try {
 
-      const response =  await clientServer.get("/accept_Connection_Request", {
+      const response =  await clientServer.post("/accept_Connection_Request", {
        
-          token: localStorage.getItem('token'),
+          token: user.token,
           requestId : user.connectionId,
           action_type: user.action
         
       })
+
+      thunkAPI.dispatch(getConnetionRequest({token: user.token}));
+      thunkAPI.dispatch(whatAreMyConnection({token: user.token}))
 
       return thunkAPI.fulfillWithValue(response.data);
       

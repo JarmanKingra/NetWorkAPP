@@ -140,7 +140,6 @@ const updateUserProfile = async (req, res) => {
 const getUserProfile = async (req, res) => {
   try {
     const { token } = req.query;
-    console.log(`token :  ${token}`);
     const user = await User.findOne({ token: token });
     if (!user) { 
       return res.status(400).json({ message: "user not found" });
@@ -149,9 +148,7 @@ const getUserProfile = async (req, res) => {
     const userProfile = await Profile.findOne({ userId: user._id }).populate(
       "userId",
       "name username email profilePicture"
-    );
- 
-    console.log(user)
+    )
 
     return res.json(userProfile);
   } catch (error) {
@@ -251,7 +248,7 @@ const getMyConnectionsRequests = async (req, res) => {
     }
 
     const connections = await ConnectionRequest.find({
-      userId: user._id,
+      userId: user._id, //userId: user._id,
     }).populate("connectionId", "name username email profilePicture");
 
     return res.json({ connections });
@@ -261,7 +258,7 @@ const getMyConnectionsRequests = async (req, res) => {
 };
 
 const whatAreMyConnection = async (req, res) => {
-  const { token } = req.body;
+  const { token } = req.query;
 
   try {
     const user = await User.findOne({ token });

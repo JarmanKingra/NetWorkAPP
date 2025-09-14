@@ -9,6 +9,7 @@ import { getAllPosts } from "@/config/redux/action/postAction";
 import {
   getConnetionRequest,
   sendConnectionRequest,
+  whatAreMyConnection,
 } from "@/config/redux/action/authAction";
 
 export default function ViewProfilePage({ userProfile }) {
@@ -19,8 +20,7 @@ export default function ViewProfilePage({ userProfile }) {
   const authState = useSelector((state) => state.auth);
 
   const [userPosts, setUserPosts] = useState([]);
-  const [isCurrentUserInConnection, setIsCurrentUserInConnection] =
-    useState(false);
+  const [isCurrentUserInConnection, setIsCurrentUserInConnection] = useState(false);
   const [isConnectionNull, setIsConnectionNull] = useState(true);
 
   const getUsersPost = async (req, res) => {
@@ -28,6 +28,7 @@ export default function ViewProfilePage({ userProfile }) {
     await dispatch(
       getConnetionRequest({ token: localStorage.getItem("token") })
     );
+    await dispatch(whatAreMyConnection({ token: localStorage.getItem("token") }));
   };
 
   useEffect(() => {
@@ -38,17 +39,27 @@ export default function ViewProfilePage({ userProfile }) {
   }, [postReducer.posts]);
 
   useEffect(() => {
-    if (
+    if (  
       authState.connections.some(
-        (user) => user.connectionId._id == userProfile.userId._id
-      )
-    ) {
+        (user) => user.connectionId._id == userProfile.userId._id)) {
       setIsCurrentUserInConnection(true);
 
       if (
         authState.connections.find(
-          (user) => user.connectionId._id === userProfile.userId._id
-        ).status_accepted == true
+          user => user.connectionId._id === userProfile.userId._id).status_accepted == true
+      ) {
+        setIsConnectionNull(false);
+      }
+    }
+
+    if (  
+      authState.connectionRequests.some(
+        (user) => user.userId._id == userProfile.userId._id)) {
+      setIsCurrentUserInConnection(true);
+
+      if (
+        authState.connectionRequests.find(
+          user => user.userId._id === userProfile.userId._id).status_accepted == true
       ) {
         setIsConnectionNull(false);
       }
@@ -94,31 +105,36 @@ export default function ViewProfilePage({ userProfile }) {
                   }}
                 >
                   {isCurrentUserInConnection ? (
-                    <button className={styles.connectedBtn}>
+                    <button className={styles.connectedButton}>
                       {isConnectionNull ? "Pending" : "Connected"}
                     </button>
                   ) : (
                     <button
-                      onClick={async () =>
+                      onClick={async () => {
                         await dispatch(
                           sendConnectionRequest({
                             token: localStorage.getItem("token"),
                             connectionId: userProfile.userId._id,
                           })
-                        )
-                      }
-                      className={styles.connectBtn}
+                        );
+                      }}
+                      className={styles.connectedButton}
                     >
                       Connect
                     </button>
                   )}
                   <div style={{ width: "1.2em" }}>
                     <svg
-                      onClick={async() => {
-                        const response = await clientServer.get(`downloadResume?id=${userProfile.userId._id}`);
-                        window.open(`${BASE_URL}/${response.data.message}`, "_blank")
+                      onClick={async () => {
+                        const response = await clientServer.get(
+                          `downloadResume?id=${userProfile.userId._id}`
+                        );
+                        window.open(
+                          `${BASE_URL}/${response.data.message}`,
+                          "_blank"
+                        );
                       }}
-                      style={{cursor: "pointer"}}
+                      style={{ cursor: "pointer" }}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -167,7 +183,7 @@ export default function ViewProfilePage({ userProfile }) {
             <div className={styles.workHistoryContainer}>
               {userProfile.pastWork.map((work, index) => {
                 return (
-                  <div className={styles.workHistoryCard}>
+                  <div key={index} className={styles.workHistoryCard}>
                     <p
                       style={{
                         fontWeight: "bold",

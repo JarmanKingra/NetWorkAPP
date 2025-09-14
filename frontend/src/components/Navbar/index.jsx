@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,12 @@ export default function NavBarComponent() {
   const router = useRouter();
   const authState = useSelector((state) => state.auth); //state?.auth ?? {}
   const dispatch = useDispatch();
+
+  //  useEffect(() => {   // for AutoRefresh 
+  //   if (authState.loggedIn) {
+  //     router.replace(router.asPath); 
+  //   }
+  // }, [authState.loggedIn]);
 
   return (
     <div className={styles.container}>
@@ -38,7 +44,7 @@ export default function NavBarComponent() {
             </div>
             </div>}
           
-          {!authState.loggedIn && 
+          {authState.loggedIn && 
           <div
             onClick={() => {
              

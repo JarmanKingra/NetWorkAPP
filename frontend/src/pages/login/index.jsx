@@ -16,7 +16,7 @@ function loginComponent() {
   const [username, setusername] = useState("");
   const [name, setname] = useState("");
   useEffect(() => {
-    if (authState.loggedIn) {
+    if (localStorage.getItem('token')) {
       router.push("/dashboard");
     }
   },[authState.loggedIn]);
