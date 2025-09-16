@@ -73,3 +73,11 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .cardContainer {
+    flex-direction: column;
+  }
+}
+

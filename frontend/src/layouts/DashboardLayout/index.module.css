@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  
 }
 
 .homeContainer {
@@ -45,10 +46,55 @@
 
 .homeContainer_feedContainer{
   padding-left: 1rem;
+  padding-bottom: 10vh;
 }
 
 .homeContainer_extraContainer{
   border-left: 1px solid black;
   padding-left: 1rem;
 }
+
+
+.mobileNavBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  display: none;
+  height: 6vh;
+  background: white;
+  align-items: center;
+}
+
+.singleNavItemHolder_mobileView{
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.mobileNavBar svg {
+  height: 2rem;
+  cursor: pointer;
+}
+
+
+@media only screen and (max-width: 600px){
+  .homeContainer_extraContainer{
+    display: none;
+  }
+
+  .homeContainer{
+    display: block;
+  }
+
+  .homeContainer_leftBar{
+    display: none;
+  }
+
+  .mobileNavBar{
+    display: flex;
+   
+  }
+}
+
 

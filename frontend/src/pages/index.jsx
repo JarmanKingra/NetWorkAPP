@@ -13,7 +13,7 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.mainContainer}>
           <div className={styles.mainContainer_left}>
-            <p>Connect with friends without any hustles.</p>
+            <p>Connect with friends.</p>
             <p>A true social media platform for you.</p>
             <div 
             onClick={() => {

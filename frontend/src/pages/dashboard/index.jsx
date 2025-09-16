@@ -250,14 +250,14 @@ export default function Dashboard() {
 
              {postState.comments.length != 0 &&  
 
-             <div>
+             <div className={styles.allCommentsContainerr}>
               {postState.comments.map((comment, index) => {
                 return ( <div className={styles.singleComment} key={comment._id}>
                    <div className={styles.singleComment_profileContainer}>
                     <img src={`${BASE_URL}/${comment.userId.profilePicture}`} />
                     <div>
                       <p style={{fontWeight: "bold", fontSize: "1.2rem"}}>{comment.userId.name}</p>
-                      <p>@{comment.userId.username}</p>
+                      <p style={{opacity: "0.7"}} >@{comment.userId.username}</p>
                     </div>
                    </div>
                    <p>{comment.body}</p>
@@ -289,6 +289,9 @@ export default function Dashboard() {
               </div>
             </div>
           }
+
+          
+
         </DashboardLayout>
       </UserLayout>
     )

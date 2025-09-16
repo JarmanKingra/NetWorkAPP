@@ -6,7 +6,7 @@ export const getAllPosts = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const response = await clientServer.get("/getAllPost");
-            return thunkAPI.fulfillWithValue(response.data)
+            return thunkAPI.fulfillWithValue(response.data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);
         }
@@ -50,11 +50,13 @@ export const incrementLikes = createAsyncThunk(
                 
             })
 
-        if(response.status == 200){
+            // await thunkAPI.dispatch(getAllPosts());
+
+        // if(response.status == 200){
             return thunkAPI.fulfillWithValue("Liked")
-        } else {
-            return thunkAPI.rejectWithValue("Not Liked")
-        }
+        // } else {
+        //     return thunkAPI.rejectWithValue("Not Liked")
+        // }
         } catch (error) {
               return thunkAPI.rejectWithValue(error.response.data);
         }
