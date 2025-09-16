@@ -11,6 +11,7 @@ import {
   sendConnectionRequest,
   whatAreMyConnection,
 } from "@/config/redux/action/authAction";
+console
 
 export default function ViewProfilePage({ userProfile }) {
   const router = useRouter();
@@ -207,8 +208,7 @@ export default function ViewProfilePage({ userProfile }) {
 }
 
 export async function getServerSideProps(context) {
-  console.log("From View");
-  console.log(context.query.username);
+
 
   const request = await clientServer.get("/get_any_user_profile", {
     params: {
@@ -217,7 +217,7 @@ export async function getServerSideProps(context) {
   });
 
   const response = await request.data;
-  console.log(response);
+  
 
   return {
     props: {
