@@ -1,5 +1,11 @@
-.container{
-    padding: 1.2rem;
+.container {
+  width: 100%;
+  background-color: #1f2937;
+  padding: 0.8rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .navBar {
@@ -8,21 +14,98 @@
   justify-content: space-between;
 }
 
-.navBar h1{
-  font-size: 1rem;
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
 }
 
-.navBarOptionContainer {
+/* Desktop nav links */
+.navOptions {
   display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Mobile hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Auth links styling */
+.authOptions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navLink {
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #f87171;
 }
 
 .buttonJoin {
-  background: #CD8987;
-  border-radius: 10px;
-  padding-block: 0.6rem;
-  padding-inline: 1.2rem;
+  background: #f87171;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   cursor: pointer;
   font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.buttonJoin:hover {
+  background: #ef4444;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .navOptions {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background-color: #1f2937;
+    flex-direction: column;
+    width: 200px;
+    padding: 1rem;
+    gap: 1rem;
+    display: none;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .navActive {
+    display: flex;
+  }
+
+  .authOptions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .buttonJoin {
+    width: 100%;
+    text-align: center;
+  }
 }

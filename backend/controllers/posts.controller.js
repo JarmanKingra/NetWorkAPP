@@ -1,7 +1,7 @@
 const Comment = require("../models/comments.model");
 const Post = require("../models/posts.model");
 const User = require("../models/users.model");
-const Profile = require("../models/profile.model")
+const Profile = require("../models/profile.model");
 
 const activeCheck = async (req, res) => {
   return res.status(200).json({ message: "Running" });
@@ -88,93 +88,118 @@ const comment = async (req, res) => {
     });
 
     await newComment.save();
-    return res.status(201).json({ message: "comment created", comment: newComment});
+    return res
+      .status(201)
+      .json({ message: "comment created", comment: newComment });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-const getCommentByPosts = async(req, res) => {
-    const {postId} = req.query;
+const getCommentByPosts = async (req, res) => {
+  const { postId } = req.query;
 
-    try {
-        const post = await Post.findOne({_id: postId});
-        if(!post){
-            return res.status(404).json({message: "Post Not Found"});
-        }
-
-        const comment = await Comment.find({postId: postId})
-        .populate('userId', 'username name profilePicture');
-
-        return res.json(comment.reverse());
-    } catch (error) {
-        
+  try {
+    const post = await Post.findOne({ _id: postId });
+    if (!post) {
+      return res.status(404).json({ message: "Post Not Found" });
     }
-}
 
-const deleteCommentOfUser = async(req, res) => {
-    const {token, commentId} = req.body;
+    const comment = await Comment.find({ postId: postId }).populate(
+      "userId",
+      "username name profilePicture"
+    );
 
-    try {
-        const user = await User.findOne({token}).select("_id");
+    return res.json(comment.reverse());
+  } catch (error) {}
+};
 
-        if(!user){
-            return res.status(404).json({message: "User not found"});
-        }
+const deleteCommentOfUser = async (req, res) => {
+  const { token, commentId } = req.body;
 
-        const comment = await Comment.findOne({_id: commentId});
-        if(!comment){
-            return res.status(404).json({message: "Comment not found"});
-        }
-        if(comment.userId.toString() != user._id.toString()){
-            return res.status(404).json({message: "Unauthorised"});
-        }
-        await Comment.deleteOne({_id: commentId});
+  try {
+    const user = await User.findOne({ token }).select("_id");
 
-        return res.status(201).json({message: "Comment deleted"});
-
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-}
 
-const incrementLikes = async(req, res) => {
-    const {postId} = req.body;
-
-    try {
-        const post = await Post.findOne({_id: postId});
-        if(!post){
-            return res.status(400).json({message: "Post not found"});
-        }
-
-        post.likes = post.likes + 1;
-        await post.save();
-
-         return res.status(200).json({ likes: post.likes });
-        
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    const comment = await Comment.findOne({ _id: commentId });
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
     }
-}
+    if (comment.userId.toString() != user._id.toString()) {
+      return res.status(404).json({ message: "Unauthorised" });
+    }
+    await Comment.deleteOne({ _id: commentId });
 
-const get_user_profile_user_based_on_username = async(req, res) => {
+    return res.status(201).json({ message: "Comment deleted" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
+const incrementLikes = async (req, res) => {
+  const { postId, token} = req.body;
+  const user = await User.findOne({ token });
+  const userId = user._id;
+
+  try {
+    const post = await Post.findOne({ _id: postId });
+    if (!post) {
+      return res.status(400).json({ message: "Post not found" });
+    }
+
+    const isLiked = await post.likedBy.includes(userId);
+
+    if (!isLiked) {
+      post.likes = post.likes + 1;
+      post.likedBy.push(userId);
+    } else {
+      post.likes = post.likes - 1;
+      post.likedBy.pull(userId);
+    }
+
+    await post.save();
+
+    return res.status(200).json({
+      likes: post.likes,
+      isLiked: !isLiked,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const get_user_profile_user_based_on_username = async (req, res) => {
   const { username } = req.query;
   try {
     const user = await User.findOne({
-      username
-    })
+      username,
+    });
 
-    if(!user){
-      return res.status(404).json({message: "User not found"})
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const userProfile = await Profile.findOne({userId: user._id})
-    .populate('userId', 'name username email profilePicture');
+    const userProfile = await Profile.findOne({ userId: user._id }).populate(
+      "userId",
+      "name username email profilePicture"
+    );
 
-    return res.json({"profile": userProfile})
+    return res.json({ profile: userProfile });
   } catch (error) {
-     return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
-}
-module.exports = { activeCheck, createPost, getAllPosts, deletePost, comment, getCommentByPosts, deleteCommentOfUser, incrementLikes, get_user_profile_user_based_on_username };
+};
+module.exports = {
+  activeCheck,
+  createPost,
+  getAllPosts,
+  deletePost,
+  comment,
+  getCommentByPosts,
+  deleteCommentOfUser,
+  incrementLikes,
+  get_user_profile_user_based_on_username,
+};

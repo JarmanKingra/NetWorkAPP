@@ -46,7 +46,8 @@ export const incrementLikes = createAsyncThunk(
         try {
             const response = await clientServer.post("/incriment_like", {
                 
-                    postId: gotData.postId
+                    postId: gotData.postId,
+                    token: localStorage.getItem('token') // added now -- 
                 
             })
 

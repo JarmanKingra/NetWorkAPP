@@ -5,3 +5,14 @@ export const BASE_URL = "https://network-app-ovd5.onrender.com/"
 export const clientServer = axios.create({
     baseURL: BASE_URL
 })
+
+
+clientServer.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = token;
+    }
+  }
+  return config;
+});

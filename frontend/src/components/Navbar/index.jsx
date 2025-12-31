@@ -1,64 +1,72 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { reset } from "@/config/redux/reducer/authReducer";
 
-
-
-
 export default function NavBarComponent() {
   const router = useRouter();
-  const authState = useSelector((state) => state.auth); //state?.auth ?? {}
+  const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  //  useEffect(() => {   // for AutoRefresh 
-  //   if (authState.loggedIn) {
-  //     router.replace(router.asPath); 
-  //   }
-  // }, [authState.loggedIn]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className={styles.container}>
       <nav className={styles.navBar}>
-        <h1
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            router.push("/");
-          }}
-        >
+        <h1 className={styles.logo} onClick={() => router.push("/")}>
           NetworkAPP
-        </h1> 
-        <div className={styles.navBarOptionContainer}>
+        </h1>
 
-          {authState.profileFetched && <div>
-            <div style={{display: "flex", gap: "1.2rem"}}>
-              {/* <p>Hey, {authState.user.userId.name}</p> */}
-              <p onClick={() => router.push("/profile")} style={{fontWeight: "bold", cursor: "pointer"}} pointe>Profile</p>
-              <p onClick={ () => {localStorage.removeItem("token"),
-               dispatch(reset())
-               router.push("/login")
-               
-              }}
-              style={{fontWeight: "bold", cursor: "pointer"}} pointe>LogOut</p>
+        {/* Hamburger Icon for Mobile */}
+        <div
+          className={styles.hamburger}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+
+        {/* Nav Links */}
+        <div
+          className={`${styles.navOptions} ${menuOpen ? styles.navActive : ""}`}
+        >
+          {authState.profileFetched && (
+            <div className={styles.authOptions}>
+              <p
+                className={styles.navLink}
+                onClick={() => {
+                  router.push("/profile");
+                  setMenuOpen(false);
+                }}
+              >
+                Profile
+              </p>
+              <p
+                className={styles.navLink}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  dispatch(reset());
+                  router.push("/login");
+                  setMenuOpen(false);
+                }}
+              >
+                LogOut
+              </p>
             </div>
-            </div>}
-          
-          {authState.loggedIn && 
-          <div
-            onClick={() => {
-             
+          )}
+
+          {authState.loggedIn && (
+            <div
+              className={styles.buttonJoin}
+              onClick={() => {
                 router.push("/login");
-              
-              
-            }}
-            className={styles.buttonJoin}
-          >
-            Be a part
-          </div>
-          }
-          
-          
+                setMenuOpen(false);
+              }}
+            >
+              Be a part
+            </div>
+          )}
         </div>
       </nav>
     </div>

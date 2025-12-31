@@ -1,91 +1,247 @@
-
 .container {
-  padding: 1.3rem;
-  background: rgb(241, 240, 240);
-  display: flex;
-  flex-direction: column;
-  
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  color: #e5e7eb;
 }
 
 .backDropContainer {
   width: 100%;
-  height: 30vh;
-  background: url("https://images.pexels.com/photos/545521/pexels-photo-545521.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
-  border-radius: 20px;
+  height: 90px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1f2937, #020617);
+  margin-bottom: 2rem;
 }
 
-
-.backDropContainer img {
-  width: 10em;
-  height: 10em;
+.profileContainer_details img {
+  height: 8rem;
   object-fit: cover;
   border-radius: 50%;
-  position: absolute;
-  bottom: -30%;
-  left: 8%;
-  text-align: center;
 }
 
+.container1{
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* =========================
+   PROFILE DETAILS CARD
+========================= */
 .profileContainer_details {
-  padding-top: 6.6rem;
+  background-color: #020617;
+  border-radius: 18px;
+  padding: 2rem;
+  margin-top: -2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
+/* =========================
+   FLEX LAYOUT
+========================= */
+.profileContainer_flex {
+  display: flex;
+  gap: 2.5rem;
+}
 
-.card {
+/* =========================
+   NAME & USERNAME
+========================= */
+.profileNameAndUsername {
+  margin-bottom: 1rem;
+}
+
+.userName {
+  font-weight: 700;
+  font-family: sans-serif;
+  color: #f9fafb;
+}
+
+.profileNameAndUsername > p {
+  font-family:'Arial Narrow';
+  font-weight: 100;
+  font-size: small;
+  opacity: .5;
+}
+
+/* =========================
+   CONNECTION SECTION
+========================= */
+.connectionStatus {
   display: flex;
   align-items: center;
-  gap: 1.4rem;
+  gap: 1.2rem;
+  margin: 1.2rem 0;
 }
 
-.card_profileContainer {
-  display: flex;
+.connectedButton {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.card_profileContainer>img {
-  width: 3.4rem;
-  height: auto;
-  height: 3.4rem;
+.connectedButton:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   BIO
+========================= */
+.profileContainer_details p {
+  color: #d1d5db;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* =========================
+   RECENT ACTIVITY
+========================= */
+.profileContainer_flex h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #f9fafb;
+}
+
+.postCard {
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: #020617;
+  border-radius: 12px;
+  padding: 0.6rem;
+  border: 1px solid #1e293b;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card_profileContainer img {
+  width: 100%;
+  height: 90px;
   object-fit: cover;
+  border-radius: 10px;
+}
+
+/* =========================
+   WORK HISTORY
+========================= */
+.workHistory {
+  margin-top: 3rem;
+}
+
+.workHistory h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #f9fafb;
 }
 
 .workHistoryContainer {
-display: flex;
-gap: 1.4rem;
-padding-top: 1.4rem;
-width: 100%;
-flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
 }
 
 .workHistoryCard {
-min-width: fit-content;
-padding-inline: 2.5rem;
-padding-block: 1rem;
-border-radius: 10px;
-box-shadow: 10px 10px 15px rgb(173, 173, 173);
-
-
+  background: #020617;
+  border: 1px solid #1e293b;
+  padding: 1.2rem;
+  border-radius: 14px;
+  transition: border 0.2s ease;
 }
 
- .connectedButton {
-  padding-inline: 0.8rem;
-  padding-block: 0.3rem;
-  border: 1px solid rgba(3, 93, 183, 0.905);
-  outline: none;
-  color: rgba(3, 93, 183, 0.905);
-  border-radius: 10px;
-  cursor: pointer;
+.workHistoryCard:hover {
+  border-color: #2563eb;
 }
 
-.profileContainer_flex{
-  display: flex;
-  gap: 0.7rem;
+.workHistoryCard p {
+  color: #d1d5db;
+  font-size: 0.9rem;
 }
 
-@media only screen and (max-width: 600px) {
+/* =========================
+   TABLET RESPONSIVE
+========================= */
+@media (max-width: 900px) {
   .profileContainer_flex {
     flex-direction: column;
   }
+
+  .backDropContainer {
+    height: 200px;
+  }
+
+  .profileContainer_details {
+    margin-top: -2.5rem;
+  }
 }
+
+/* =========================
+   MOBILE RESPONSIVE (DEEP)
+========================= */
+@media (max-width: 600px) {
+  .container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+.container1{
+  flex-direction: column;
+  border-bottom: 1px solid white;
+}
+
+
+
+  .userName {
+    font-size: 1.5rem;
+  }
+
+  .connectionStatus{
+  display: flex;
+  flex-direction: row;
+}
+
+  .connectedButton {
+    width: fit-content;
+    text-align: center;
+    padding: 5px;
+  }
+
+  .card_profileContainer img {
+    height: 70px;
+  }
+
+  .workHistoryContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1000px) {
+  .container {
+  width: 70%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  color: #e5e7eb;
+}
+}
+

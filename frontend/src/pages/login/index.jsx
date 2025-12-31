@@ -31,7 +31,7 @@ function loginComponent() {
     dispatch(emptyMessage());
   }, [userLoginMethod]);
 
-  const handleRegister =async () => {
+  const handleRegister = async () => {
     await dispatch(registerUser({ username, name, password, email }));
     setuserLoginMethod(true);  // used to redirect to login 
 };

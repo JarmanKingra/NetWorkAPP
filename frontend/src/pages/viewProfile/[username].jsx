@@ -11,7 +11,7 @@ import {
   sendConnectionRequest,
   whatAreMyConnection,
 } from "@/config/redux/action/authAction";
-console
+console;
 
 export default function ViewProfilePage({ userProfile }) {
   const router = useRouter();
@@ -21,7 +21,8 @@ export default function ViewProfilePage({ userProfile }) {
   const authState = useSelector((state) => state.auth);
 
   const [userPosts, setUserPosts] = useState([]);
-  const [isCurrentUserInConnection, setIsCurrentUserInConnection] = useState(false);
+  const [isCurrentUserInConnection, setIsCurrentUserInConnection] =
+    useState(false);
   const [isConnectionNull, setIsConnectionNull] = useState(true);
 
   const getUsersPost = async (req, res) => {
@@ -29,7 +30,9 @@ export default function ViewProfilePage({ userProfile }) {
     await dispatch(
       getConnetionRequest({ token: localStorage.getItem("token") })
     );
-    await dispatch(whatAreMyConnection({ token: localStorage.getItem("token") }));
+    await dispatch(
+      whatAreMyConnection({ token: localStorage.getItem("token") })
+    );
   };
 
   useEffect(() => {
@@ -40,27 +43,33 @@ export default function ViewProfilePage({ userProfile }) {
   }, [postReducer.posts]);
 
   useEffect(() => {
-    if (  
+    if (
       authState.connections.some(
-        (user) => user.connectionId._id == userProfile.userId._id)) {
+        (user) => user.connectionId._id == userProfile.userId._id
+      )
+    ) {
       setIsCurrentUserInConnection(true);
 
       if (
         authState.connections.find(
-          user => user.connectionId._id === userProfile.userId._id).status_accepted == true
+          (user) => user.connectionId._id === userProfile.userId._id
+        ).status_accepted == true
       ) {
         setIsConnectionNull(false);
       }
     }
 
-    if (  
+    if (
       authState.connectionRequests.some(
-        (user) => user.userId._id == userProfile.userId._id)) {
+        (user) => user.userId._id == userProfile.userId._id
+      )
+    ) {
       setIsCurrentUserInConnection(true);
 
       if (
         authState.connectionRequests.find(
-          user => user.userId._id === userProfile.userId._id).status_accepted == true
+          (user) => user.userId._id === userProfile.userId._id
+        ).status_accepted == true
       ) {
         setIsConnectionNull(false);
       }
@@ -75,36 +84,21 @@ export default function ViewProfilePage({ userProfile }) {
     <UserLayout>
       <DashboardLayout>
         <div className={styles.container}>
-          <div className={styles.backDropContainer}>
-            <img
+          <div className={styles.profileContainer_details}>
+            <div className={styles.container1}>
+              <img
               src={`${BASE_URL}/${userProfile.userId.profilePicture}`}
               alt=""
             />
-          </div>
-
-          <div className={styles.profileContainer_details}>
             <div className={styles.profileContainer_flex}>
               <div style={{ flex: "0.8" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    width: "fit-content",
-                    alignItems: "center",
-                    gap: "1.2rem",
-                  }}
-                >
-                  <h2>{userProfile.userId.name}</h2>
-                  <p style={{ color: "grey" }}>
+                <div className={styles.profileNameAndUsername}>
+                  <h4 className={styles.userName}>{userProfile.userId.name}</h4>
+                  <p>
                     @{userProfile.userId.username}
                   </p>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1.2rem",
-                  }}
-                >
+                <div className={styles.connectionStatus}>
                   {isCurrentUserInConnection ? (
                     <button className={styles.connectedButton}>
                       {isConnectionNull ? "Pending" : "Connected"}
@@ -151,12 +145,9 @@ export default function ViewProfilePage({ userProfile }) {
                     </svg>
                   </div>
                 </div>
-
-                <div>
-                  <p>{userProfile.bio}</p>
-                </div>
               </div>
-              <div style={{ flex: "0.2" }}>
+
+              {/* <div style={{ flex: "0.2" }}>
                 <h3>Recent Activity</h3>
                 {userPosts.map((post) => {
                   return (
@@ -175,7 +166,12 @@ export default function ViewProfilePage({ userProfile }) {
                     </div>
                   );
                 })}
-              </div>
+              </div> */}
+            </div>
+            </div>
+            
+            <div>
+              <p>{userProfile.bio}</p>
             </div>
           </div>
 
@@ -208,8 +204,6 @@ export default function ViewProfilePage({ userProfile }) {
 }
 
 export async function getServerSideProps(context) {
-
-
   const request = await clientServer.get("/get_any_user_profile", {
     params: {
       username: context.query.username,
@@ -217,7 +211,6 @@ export async function getServerSideProps(context) {
   });
 
   const response = await request.data;
-  
 
   return {
     props: {

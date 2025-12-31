@@ -45,15 +45,10 @@ export const registerUser = createAsyncThunk(
 
 export const getAboutUser = createAsyncThunk(
   "user/getAboutUser",
-  async(user, thunkAPI) => {
+  async(_, thunkAPI) => {
     try {
       
-      const response = await clientServer.get("/get_user_profile", {
-        params : {
-          token : user.token 
-        }
-
-      })
+      const response = await clientServer.get("/get_user_profile")
 
       return thunkAPI.fulfillWithValue(response.data)
       
@@ -62,6 +57,13 @@ export const getAboutUser = createAsyncThunk(
     }
   }
 )
+
+// , {
+//         params : {
+//           token : user.token 
+//         }
+
+//       }
 
 export const getAllUsers = createAsyncThunk(
   "/getAllUsers",
