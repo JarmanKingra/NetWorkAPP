@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./style.module.css";
 import { loginUser, registerUser } from "@/config/redux/action/authAction";
 import { emptyMessage } from "@/config/redux/reducer/authReducer";
+import ButtonSpinner from "@/components/loaders/loading";
 
 function loginComponent() {
   const authState = useSelector((state) => state.auth);
@@ -16,16 +17,16 @@ function loginComponent() {
   const [username, setusername] = useState("");
   const [name, setname] = useState("");
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem("token")) {
       router.push("/dashboard");
     }
-  },[authState.loggedIn]);
+  }, [authState.loggedIn]);
 
   useEffect(() => {
-    if(authState.loggedIn){
+    if (authState.loggedIn) {
       router.push("/dashboard");
     }
-  },[authState.loggedIn])
+  }, [authState.loggedIn]);
 
   useEffect(() => {
     dispatch(emptyMessage());
@@ -33,13 +34,13 @@ function loginComponent() {
 
   const handleRegister = async () => {
     await dispatch(registerUser({ username, name, password, email }));
-    setuserLoginMethod(true);  // used to redirect to login 
-};
+   
+  };
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     console.log("login..");
-    await dispatch(loginUser({email, password}));
-  }
+    await dispatch(loginUser({ email, password }));
+  };
   return (
     <UserLayout>
       <div className={styles.container}>
@@ -81,7 +82,7 @@ function loginComponent() {
                 placeholder="Password"
               />
 
-              <div
+              <button
                 onClick={() => {
                   if (userLoginMethod) {
                     handleLogin();
@@ -90,21 +91,33 @@ function loginComponent() {
                   }
                 }}
                 className={styles.buttonWithOutline}
+                disabled={authState.isLoading}
               >
-                <p>{userLoginMethod ? "SignIn" : "SignUp"}</p>
-              </div>
+                {authState.isLoading ? (
+                  <ButtonSpinner text={userLoginMethod ? "Logging in..." : "Registering..."}/>
+                ) : (
+                  <p>{userLoginMethod ? "SignIn" : "SignUp"}</p>
+                )}
+              </button>
             </div>
           </div>
           <div className={styles.cardContainer_right}>
-            <div >
-              {!userLoginMethod ? <p>Already have a account?</p> : <p>Don't have a account?</p>}
-              <div style={{marginTop: "10px", textAlign: "center"}}
+            <div>
+              {!userLoginMethod ? (
+                <p>Already have a account?</p>
+              ) : (
+                <p>Don't have a account?</p>
+              )}
+              <div
+                style={{ marginTop: "10px", textAlign: "center" }}
                 onClick={() => {
                   setuserLoginMethod(!userLoginMethod);
                 }}
                 className={styles.buttonWithOutline}
               >
-                <p style={{color: "black"}}>{userLoginMethod ? "SignUp" : "SignIn"}</p>
+                <p style={{ color: "black" }}>
+                  {userLoginMethod ? "SignUp" : "SignIn"}
+                </p>
               </div>
             </div>
           </div>
