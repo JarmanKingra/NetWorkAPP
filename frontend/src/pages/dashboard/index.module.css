@@ -21,10 +21,10 @@
   padding-inline: 0.8rem;
   gap: 1.3rem;
   align-items: center;
-  background: #1f2937; /* dark bg */
+  background: #1f2937;
   border-radius: 20px;
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 3px 8px 8px rgba(0, 0, 0, 0.3);
 }
 
 .userProfile {
@@ -37,8 +37,8 @@
 
 .createPostContainer > textarea {
   width: 100%;
-  background-color: #ffffff;
-  color: #e5e7eb;
+  background-color: #c2c1c1;
+  color: #000000;
   border: 1px solid #374151;
   border-radius: 10px;
   font-family: Arial, Helvetica, sans-serif;
@@ -91,6 +91,7 @@
   margin-bottom: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   transition: all 0.2s;
+  position: relative;
 }
 
 .singleCard:hover {
@@ -105,7 +106,7 @@
   padding-right: 3.4rem;
 }
 
-.postInfoPicAndName{
+.postInfoPicAndName {
   display: flex;
   gap: 1rem;
 }
@@ -115,7 +116,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #4b5563;
- }
+}
 
 .postInfo {
   display: flex;
@@ -135,6 +136,7 @@
   height: auto;
   object-fit: cover;
   border-radius: 15px;
+  cursor: pointer;
 }
 
 .optionsContainer {
@@ -177,9 +179,18 @@
   align-items: center;
 }
 
+.threeDot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
 .allCommentsContainer {
   min-width: 40svw;
-  max-width: 1120px;
+  max-width: 50%;
   height: 80vh;
   background: #1f2937;
   border-radius: 10px;
@@ -198,6 +209,23 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #6b7280 #1f2937;
+}
+
+.commentName {
+  text-transform: capitalize;
+  font-size: small;
+  font-weight: 100;
+}
+
+.commentUserName {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: smaller;
+  opacity: 0.5;
+}
+
+.commentBody {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .allCommentsContainerr::-webkit-scrollbar {
@@ -221,6 +249,24 @@
   background-color: #111827;
   padding: 0.8rem;
   border-radius: 10px;
+  max-width: 520px;
+}
+
+.commentBody {
+  margin-top: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.seeMore {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #38bdf8;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .singleComment_profileContainer {

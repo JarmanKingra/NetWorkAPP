@@ -146,27 +146,6 @@ export default function ViewProfilePage({ userProfile }) {
                   </div>
                 </div>
               </div>
-
-              {/* <div style={{ flex: "0.2" }}>
-                <h3>Recent Activity</h3>
-                {userPosts.map((post) => {
-                  return (
-                    <div key={post._id} className={styles.postCard}>
-                      <div className={styles.card}>
-                        <div className={styles.card_profileContainer}>
-                          {post.media !== "" ? (
-                            <img src={`${BASE_URL}/${post.media}`} />
-                          ) : (
-                            <div
-                              style={{ width: "3.4rem", height: "3.4rem" }}
-                            ></div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div> */}
             </div>
             </div>
             

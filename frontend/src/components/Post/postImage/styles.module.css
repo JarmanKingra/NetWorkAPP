@@ -1,0 +1,39 @@
+.imageOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageModal {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.imageModal img {
+  max-width: 100vh;
+  max-height: 80%;
+  border-radius: 10px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 620px){
+  .imageModal img {
+    width: 100%;
+  }
+}

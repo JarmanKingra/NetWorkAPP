@@ -56,7 +56,7 @@ export default function NavBarComponent() {
             </div>
           )}
 
-          {authState.loggedIn && (
+          {/* {authState.loggedIn && (
             <div
               className={styles.buttonJoin}
               onClick={() => {
@@ -66,7 +66,7 @@ export default function NavBarComponent() {
             >
               Be a part
             </div>
-          )}
+          )} */}
         </div>
       </nav>
     </div>

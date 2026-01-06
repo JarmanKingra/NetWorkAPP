@@ -34,7 +34,6 @@ function loginComponent() {
 
   const handleRegister = async () => {
     await dispatch(registerUser({ username, name, password, email }));
-   
   };
 
   const handleLogin = async () => {
@@ -52,7 +51,20 @@ function loginComponent() {
             <p style={{ color: authState.isError ? "red" : "green" }}>
               {authState.message.message}
             </p>
-            <div className={styles.inputContainers}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+
+                if (authState.isLoading) return;
+
+                if (userLoginMethod) {
+                  handleLogin();
+                } else {
+                  handleRegister();
+                }
+              }}
+              className={styles.inputContainers}
+            >
               {!userLoginMethod && (
                 <div className={styles.inputRow}>
                   <input
@@ -83,23 +95,19 @@ function loginComponent() {
               />
 
               <button
-                onClick={() => {
-                  if (userLoginMethod) {
-                    handleLogin();
-                  } else {
-                    handleRegister();
-                  }
-                }}
+                type="submit"
                 className={styles.buttonWithOutline}
                 disabled={authState.isLoading}
               >
                 {authState.isLoading ? (
-                  <ButtonSpinner text={userLoginMethod ? "Logging in..." : "Registering..."}/>
+                  <ButtonSpinner
+                    text={userLoginMethod ? "Logging in..." : "Registering..."}
+                  />
                 ) : (
                   <p>{userLoginMethod ? "SignIn" : "SignUp"}</p>
                 )}
               </button>
-            </div>
+            </form>
           </div>
           <div className={styles.cardContainer_right}>
             <div>

@@ -14,7 +14,7 @@ export default function MyConnections() {
   const router = useRouter();
 
   useEffect(() => {
-     dispatch(whatAreMyConnection({ token: localStorage.getItem("token") })); // who who send me 
+     dispatch(whatAreMyConnection({ token: localStorage.getItem("token") }));
   }, []);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function MyConnections() {
       {authState.connectionRequests.length == 0  && <h2>No Connection Requests</h2> }
 
           {authState.connectionRequests.length != 0 &&
-            authState.connectionRequests.filter((connection) => connection.status_accepted === null).map((user, index) => {  // 
+            authState.connectionRequests.filter((connection) => connection.status_accepted === null).map((user, index) => { 
               {console.log("user is --- ", user)}
                  return (
                 
