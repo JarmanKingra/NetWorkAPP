@@ -6,11 +6,13 @@ import styles from "./index.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { getAllPosts } from "@/config/redux/action/postAction";
+import ProfileHeader from "@/components/Profile/ProfileHeader/profileHeader";
 import {
   getConnetionRequest,
   sendConnectionRequest,
   whatAreMyConnection,
 } from "@/config/redux/action/authAction";
+import WorkHistory from "@/components/Profile/WorkHistory/workHistory";
 console;
 
 export default function ViewProfilePage({ userProfile }) {
@@ -154,7 +156,9 @@ export default function ViewProfilePage({ userProfile }) {
             </div>
           </div>
 
-          <div className={styles.workHistory}>
+          {/* <ProfileHeader profile={userProfile}/> */}
+
+          {/* <div className={styles.workHistory}>
             <h4>Work History</h4>
             <div className={styles.workHistoryContainer}>
               {userProfile.pastWork.map((work, index) => {
@@ -175,7 +179,8 @@ export default function ViewProfilePage({ userProfile }) {
                 );
               })}
             </div>
-          </div>
+          </div> */}
+          <WorkHistory work={userProfile.pastWork}/>
         </div>
       </DashboardLayout>
     </UserLayout>

@@ -8,6 +8,10 @@ import { BASE_URL, clientServer } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "@/config/redux/action/postAction";
 import { useRouter } from "next/router";
+import EditProfileModal from "@/components/Profile/EditProfile/editProfile";
+import { EditPencilIcon } from "@/components/SvgIcons/profileSvgs";
+import ProfileHeader from "@/components/Profile/ProfileHeader/profileHeader";
+import WorkHistory from "@/components/Profile/WorkHistory/workHistory";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -16,11 +20,10 @@ export default function Profile() {
   const postReducer = useSelector((state) => state.posts);
   const authState = useSelector((state) => state.auth);
   const [userPosts, setUserPosts] = useState([]);
-
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [userProfile, setUserProfile] = useState({});
-
+  const [loading, setLoading] = useState(false);
   const [inputData, SetInputData] = useState({
     company: "",
     position: "",
@@ -48,43 +51,82 @@ export default function Profile() {
   }, [authState.user, postReducer.posts]);
 
   const updateProfilePicture = async (file) => {
-    const formData = new FormData();
-    formData.append("profile_picture", file);
-    formData.append("token", localStorage.getItem("token"));
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("profile_picture", file);
+      formData.append("token", localStorage.getItem("token"));
 
-    const response = await clientServer.post(
-      "/update_profile_picture",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+      const response = await clientServer.post(
+        "/update_profile_picture",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-    dispatch(getAboutUser({ token: localStorage.getItem("token") }));
+      dispatch(getAboutUser({ token: localStorage.getItem("token") }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateProfileData = async () => {
-    const request = await clientServer.post("/update_user", {
-      token: localStorage.getItem("token"),
-      name: userProfile.userId.name,
-    });
+  const updateProfileData = async (data) => {
+    try {
+      setLoading(true);
+      const request = await clientServer.post("/update_user", {
+        token: localStorage.getItem("token"),
+        name: data.name,
+      });
 
-    const response = await clientServer.post("/update_profile_data", {
+      const response = await clientServer.post("/update_profile_data", {
+        token: localStorage.getItem("token"),
+        bio: data.bio,
+        currentPost: userProfile.currentPost,
+        pastWork: userProfile.pastWork,
+        education: userProfile.education,
+      });
+
+      dispatch(getAboutUser({ token: localStorage.getItem("token") }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addWorkHistory = async () => {
+  try {
+    setLoading(true);
+
+    const updatedPastWork = [...userProfile.pastWork, inputData];
+
+    await clientServer.post("/update_profile_data", {
       token: localStorage.getItem("token"),
       bio: userProfile.bio,
       currentPost: userProfile.currentPost,
-      pastWork: userProfile.pastWork,
+      pastWork: updatedPastWork,
       education: userProfile.education,
     });
 
     dispatch(getAboutUser({ token: localStorage.getItem("token") }));
-  };
+    setIsModalOpen(false);
+
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <UserLayout>
-      <DashboardLayout>
+      <DashboardLayout hideRight>
         {authState.user && userProfile.userId && (
           <div className={styles.container}>
             <div className={styles.backDropContainer}>
@@ -108,7 +150,7 @@ export default function Profile() {
               />
             </div>
 
-            <div className={styles.profileContainer_details}>
+            {/* <div className={styles.profileContainer_details}>
               <div className={styles.profileContainer_profileInfo}>
                 <div style={{ flex: "0.8" }}>
                   <div
@@ -120,85 +162,67 @@ export default function Profile() {
                       gap: ".3rem",
                     }}
                   >
-                    
-                      <input
-                      className={styles.nameEdit}
-                      type="text"
-                      value={userProfile.userId.name}
-                      onChange={(e) =>
-                        setUserProfile({
-                          ...userProfile,
-                          userId: {
-                            ...userProfile.userId,
-                            name: e.target.value,
-                          },
-                        })
-                      }
-                    />
-
-                    <p style={{ color: "grey" }}>
-                      @{userProfile.userId.username}
-                    </p>
-                    
+                    <p className={styles.nameEdit}>{userProfile.userId.name}</p>
                   </div>
 
-                  <div className={styles.textAreaBio}>
-                    <textarea
-                      value={userProfile.bio}
-                      onChange={(e) => {
-                        setUserProfile({ ...userProfile, bio: e.target.value });
-                        e.target.style.height = "auto";
-                        e.target.style.height = e.target.scrollHeight + "px";
-                      }}
-                      rows={Math.max(3, Math.ceil(userProfile.bio.length / 80))}
-                      style={{ width: "100%" }}
-                    />
+                  <div className={styles.HeadLineContainer}>
+                    <p className={styles.HeadLine}>{userProfile.bio}</p>
                   </div>
                 </div>
+                <div
+                  className={styles.editProfilePencilIcon}
+                  onClick={() => setIsEditProfileOpen(true)}
+                >
+                  <EditPencilIcon />
+                </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className={styles.workHistory}>
-              <h4>Work History</h4>
-              <div className={styles.workHistoryContainer}>
-                {userProfile.pastWork.map((work, index) => {
-                  return (
-                    <div key={index} className={styles.workHistoryCard}>
-                      <p
-                        style={{
-                          fontWeight: "bold",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.8rem",
-                        }}
-                      >
-                        {work.company} - {work.position}
-                      </p>
-                      <p>{work.years}</p>
-                    </div>
-                  );
-                })}
+            <ProfileHeader
+              profile={userProfile}
+              isEditable
+              onEditClick={() => setIsEditProfileOpen(true)}
+            />
+
+            {/* <div className={styles.workHistory}>
+              <div className={styles.workHistoryHeaders}>
+                <p>Work History</p>
                 <button
                   className={styles.addWorkButton}
                   onClick={() => {
                     setIsModalOpen(true);
                   }}
                 >
-                  Add Work
+                  <p>Add Work</p>
                 </button>
               </div>
-            </div>
 
-            {userProfile !== authState.user && (
-              <div
-                onClick={() => {
-                  updateProfileData();
-                }}
-                className={styles.updateProfileButton}
-              >
-                Update Profile
+              <div className={styles.workHistoryContainer}>
+                {userProfile.pastWork.map((work, index) => (
+                  <div key={index} className={styles.workHistoryCard}>
+                    <div className={styles.workLeft}>
+                      <div className={styles.companyLogo}>
+                        {work.company.charAt(0)}
+                      </div>
+                    </div>
+
+                    <div className={styles.workRight}>
+                      <p className={styles.position}>{work.position}</p>
+
+                      <p className={styles.company}>{work.company}</p>
+
+                      <p className={styles.duration}>{work.years}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div> */}
+
+            <WorkHistory
+              work={userProfile.pastWork}
+              editable
+              onAddWork={() => setIsModalOpen(true)}
+            />
           </div>
         )}
 
@@ -207,7 +231,7 @@ export default function Profile() {
             onClick={async () => {
               setIsModalOpen(false);
             }}
-            className={styles.commentsContainer}
+            className={styles.editWorkHIstoryContainer}
           >
             <div
               onClick={(e) => {
@@ -237,21 +261,36 @@ export default function Profile() {
                 placeholder="Years"
               />
 
-              <div
-                onClick={() => {
-                  setUserProfile({
-                    ...userProfile,
-                    pastWork: [...userProfile.pastWork, inputData],
-                  });
-                  setIsModalOpen(false);
-                }}
+              <div onClick={addWorkHistory}
+                // onClick={() => {
+                //   setUserProfile({
+                //     ...userProfile,
+                //     pastWork: [...userProfile.pastWork, inputData],
+                //   });
+                //   setIsModalOpen(false);
+                // }}
                 className={styles.updateProfileButton}
               >
-                Update Profile
+                Add Work
               </div>
             </div>
           </div>
         )}
+
+        <EditProfileModal
+          isOpen={isEditProfileOpen}
+          onClose={() => setIsEditProfileOpen(false)}
+          initialData={{
+            name: userProfile?.userId?.name,
+            bio: userProfile?.bio,
+          }}
+          onSave={async (data) => {
+            await updateProfileData(data);
+            console.log(data);
+            setIsEditProfileOpen(false);
+          }}
+          spinner={loading}
+        />
       </DashboardLayout>
     </UserLayout>
   );

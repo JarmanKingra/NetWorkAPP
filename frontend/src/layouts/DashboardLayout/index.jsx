@@ -6,7 +6,7 @@ import { setTokenIsThere } from "@/config/redux/reducer/authReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "@/config";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children, hideRight = false  }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
@@ -99,6 +99,8 @@ export default function DashboardLayout({ children }) {
             </div>
           </div>
           <div className={styles.homeContainer_feedContainer}>{children}</div>
+
+         {!hideRight && (
           <div className={styles.homeContainer_extraContainer}>
             {authState.all_profiles_fetched &&
               authState.all_users.map((profile) => (
@@ -117,6 +119,8 @@ export default function DashboardLayout({ children }) {
                 </div>
               ))}
           </div>
+          )}
+
         </div>
       </div>
 
