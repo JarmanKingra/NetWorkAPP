@@ -14,7 +14,8 @@ export default function ProfileHeader({
           <p className={styles.nameEdit}>{profile.userId.name}</p>
 
           <div className={styles.HeadLineContainer}>
-            <p className={styles.HeadLine}>{profile.bio}</p>
+            {profile.bio.length == 0 ? 
+            <p className={styles.HeadLine}>No TagLine added</p> : <p className={styles.HeadLine}>{profile.bio}</p>}
           </div>
         </div>
 

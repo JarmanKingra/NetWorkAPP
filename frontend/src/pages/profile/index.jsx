@@ -9,13 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "@/config/redux/action/postAction";
 import { useRouter } from "next/router";
 import EditProfileModal from "@/components/Profile/EditProfile/editProfile";
-import { EditPencilIcon } from "@/components/SvgIcons/profileSvgs";
 import ProfileHeader from "@/components/Profile/ProfileHeader/profileHeader";
 import WorkHistory from "@/components/Profile/WorkHistory/workHistory";
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const postReducer = useSelector((state) => state.posts);
   const authState = useSelector((state) => state.auth);
@@ -262,13 +260,6 @@ export default function Profile() {
               />
 
               <div onClick={addWorkHistory}
-                // onClick={() => {
-                //   setUserProfile({
-                //     ...userProfile,
-                //     pastWork: [...userProfile.pastWork, inputData],
-                //   });
-                //   setIsModalOpen(false);
-                // }}
                 className={styles.updateProfileButton}
               >
                 Add Work

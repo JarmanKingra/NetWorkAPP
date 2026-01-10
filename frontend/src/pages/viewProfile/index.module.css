@@ -1,18 +1,33 @@
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem;
-  color: #e5e7eb;
+  background: #1f2937;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(0, 0, 0);
+  width: 96%;
+  margin-left: 1.5%;
+  border-radius: 20px;
+  padding-bottom: 2rem;
 }
 
 .backDropContainer {
   width: 100%;
-  height: 90px;
-  border-radius: 18px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #1f2937, #020617);
-  margin-bottom: 2rem;
+  height: 30vh;
+  background: url("https://images.pexels.com/photos/545521/pexels-photo-545521.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  border-radius: 20px 20px 0 0;
+}
+
+.backDropContainer img {
+  width: 9em;
+  height: 9em;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -30%;
+  left: 8%;
+  text-align: center;
 }
 
 .profileContainer_details img {
@@ -21,7 +36,7 @@
   border-radius: 50%;
 }
 
-.container1{
+.container1 {
   display: flex;
   gap: 3rem;
   align-items: center;
@@ -64,10 +79,10 @@
 }
 
 .profileNameAndUsername > p {
-  font-family:'Arial Narrow';
+  font-family: "Arial Narrow";
   font-weight: 100;
   font-size: small;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 /* =========================
@@ -78,6 +93,7 @@
   align-items: center;
   gap: 1.2rem;
   margin: 1.2rem 0;
+  padding-left: 1rem;
 }
 
 .connectedButton {
@@ -191,34 +207,35 @@
   }
 }
 
-/* =========================
-   MOBILE RESPONSIVE (DEEP)
-========================= */
+
 @media (max-width: 600px) {
   .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem;
-  color: #e5e7eb;
-  display: flex;
-  flex-direction: column;
-}
-.container1{
-  flex-direction: column;
-  border-bottom: 1px solid white;
-}
+    width: 100%;
+    max-width: 1200px;
+    color: #e5e7eb;
+    display: flex;
+    flex-direction: column;
+  }
+  .container1 {
+    flex-direction: column;
+    border-bottom: 1px solid white;
+  }
 
-
+  .backDropContainer img {
+    height: 7.5rem;
+    width: 7.5rem;
+  }
 
   .userName {
     font-size: 1.5rem;
   }
 
-  .connectionStatus{
-  display: flex;
-  flex-direction: row;
-}
+  .connectionStatus {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding-bottom: 0;
+  }
 
   .connectedButton {
     width: fit-content;
@@ -230,18 +247,25 @@
     height: 70px;
   }
 
-  .workHistoryContainer {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media screen and (min-width: 601px) and (max-width: 1000px) {
   .container {
-  width: 70%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem;
-  color: #e5e7eb;
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #e5e7eb;
+  }
 }
+
+@media only screen and (max-width: 400px) {
+  .backDropContainer img {
+    height: 6rem;
+    width: 6rem;
+  }
+
+  .backDropContainer {
+    height: 20vh;
+  }
 }
 

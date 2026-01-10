@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getAboutUser,
   getAllUsers,
-  getConnetionRequest,
+  getMyConnetionRequest,
   loginUser,
   registerUser,
   whatAreMyConnection,
@@ -18,7 +18,7 @@ const initialState = {
   message: "",
   profileFetched: false,
   connections: [],
-  connectionRequests: [],
+  pendingRequests: [],
   all_users: [],
   all_profiles_fetched: false,
 };
@@ -74,8 +74,9 @@ const authSlice = createSlice({
         (state.isLoading = false),
           (state.isError = false),
           (state.isSuccess = true),
+          (state.loggedIn = true),
           (state.message = {
-            message: "Registration is SuccessFull, please SignIn",
+            message: "Registration is SuccessFull",
           });
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -95,14 +96,14 @@ const authSlice = createSlice({
           (state.all_profiles_fetched = true),
           (state.all_users = action.payload);
       })
-      .addCase(getConnetionRequest.fulfilled, (state, action) => {
-        state.connections = action.payload;
+      .addCase(getMyConnetionRequest.fulfilled, (state, action) => {
+        state.pendingRequests = action.payload;
       })
-      .addCase(getConnetionRequest.rejected, (state, action) => {
+      .addCase(getMyConnetionRequest.rejected, (state, action) => {
         state.message = action.payload;
       })
       .addCase(whatAreMyConnection.fulfilled, (state, action) => {
-        state.connectionRequests = action.payload;
+        state.connections = action.payload || [];
       })
       .addCase(whatAreMyConnection.rejected, (state, action) => {
         state.message = action.payload;

@@ -12,11 +12,10 @@ export const loginUser = createAsyncThunk(
       });
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
+        return thunkAPI.fulfillWithValue(response.data.token);
       } else {
         return thunkAPI.rejectWithValue({ message: "token not provided" });
       }
-
-      return thunkAPI.fulfillWithValue(response.data.token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -34,10 +33,18 @@ export const registerUser = createAsyncThunk(
         name: user.name,
       });
 
-      return thunkAPI.fulfillWithValue(response.value);
+      console.log("REGISTER RESPONSE 👉", response);
+      console.log("REGISTER RESPONSE DATA 👉", response.data);
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        return thunkAPI.fulfillWithValue(response.data.token);
+      } else {
+        return thunkAPI.rejectWithValue({ message: "token not provided" });
+      }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
-    } 
+    }
   }
 );
 
@@ -96,10 +103,10 @@ export const sendConnectionRequest = createAsyncThunk(
     try {
       const response = await clientServer.post("/send_connetion_request", {
         token: localStorage.getItem("token"),
-        connectionId: user.connectionId,
+        receiverId: user.receiverId,
       });
 
-      thunkAPI.dispatch(getConnetionRequest({ token: user.token }));
+      thunkAPI.dispatch(getMyConnetionRequest({ token: user.token }));
 
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -108,8 +115,7 @@ export const sendConnectionRequest = createAsyncThunk(
   }
 );
 
-export const getConnetionRequest = createAsyncThunk(
-  // to whom whom i sent
+export const getMyConnetionRequest = createAsyncThunk(
   "/getconnectionRequest",
   async (user, thunkAPI) => {
     try {
@@ -119,7 +125,7 @@ export const getConnetionRequest = createAsyncThunk(
         },
       });
 
-      return thunkAPI.fulfillWithValue(response.data.connections);
+      return thunkAPI.fulfillWithValue(response.data.requests);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -127,7 +133,6 @@ export const getConnetionRequest = createAsyncThunk(
 );
 
 export const whatAreMyConnection = createAsyncThunk(
-  // who who sent me
   "whatAremyconnections",
   async (user, thunkAPI) => {
     try {
