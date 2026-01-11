@@ -227,12 +227,15 @@ const sendConnectionRequest = async (req, res) => {
     }
 
     const existingRequest = await ConnectionRequest.findOne({
-      userId: sender._id,
-      receiver: receiver._id,
+      $or: [
+        { sender: sender._id, receiver: receiver._id },
+        { sender: receiver._id, receiver: sender._id },
+      ],
+      status_accepted: null,
     });
 
     if (existingRequest) {
-      return res.status(400).json({ message: "Request ALready sent" });
+      return res.status(400).json({ message: "Request already exists" });
     }
 
     const request = new ConnectionRequest({
@@ -241,8 +244,28 @@ const sendConnectionRequest = async (req, res) => {
     });
 
     await request.save();
-
     return res.json({ message: "Request Sent" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const getMySentRequests = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const user = await User.findOne({ token });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const sentRequests = await ConnectionRequest.find({
+      sender: user._id,
+    })
+      .populate("receiver", "name username profilePicture")
+      .sort({ createdAt: -1 });
+
+    return res.json(sentRequests);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -325,6 +348,7 @@ const acceptConnectionRequest = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
 module.exports = {
   login,
   register,
@@ -335,6 +359,7 @@ module.exports = {
   updateProfileData,
   downloadProfile,
   sendConnectionRequest,
+  getMySentRequests,
   getMyConnectionsRequests,
   whatAreMyConnection,
   acceptConnectionRequest,

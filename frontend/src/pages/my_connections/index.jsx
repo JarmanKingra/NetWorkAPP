@@ -17,7 +17,7 @@ export default function MyConnections() {
   const authState = useSelector((state) => state.auth);
   const router = useRouter();
 
-  useEffect(async () => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
 
     dispatch(getAboutUser({ token }));
@@ -28,14 +28,25 @@ export default function MyConnections() {
   return (
     <UserLayout>
       <DashboardLayout>
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: "1.7rem" }}
-        >
-          <h3>Pending Requests</h3>
+        <div className={styles.pageContainer}>
+          <h3 className={styles.sectionTitle}>Pending Requests</h3>
 
-          {authState.connections?.length === 0 && <p>No connections yet</p>}
+          {authState.pendingRequests?.length === 0 && (
+            <p className={styles.emptyText}>No pending requests</p>
+          )}
 
-          {authState.pendingRequests.map((req) => {
+          {authState.pendingRequests?.length === 0 &&
+          authState.connections?.length === 0 ? (
+            <p className={styles.fullEmptyState}>
+              No requests or connections yet 😔
+            </p>
+          ) : null}
+
+          {authState.connections?.length === 0 && (
+            <p className={styles.emptyText}>No connections yet</p>
+          )}
+
+          {authState.pendingRequests?.map((req) => {
             const sender = req.sender;
 
             return (
@@ -44,13 +55,7 @@ export default function MyConnections() {
                 className={styles.userCard}
                 key={req._id}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1.2rem",
-                  }}
-                >
+                <div className={styles.cardRow}>
                   <div className={styles.profilePicture}>
                     <img src={`${BASE_URL}/${sender.profilePicture}`} alt="" />
                   </div>
@@ -68,8 +73,16 @@ export default function MyConnections() {
                           action: "accept",
                         })
                       ).then(() => {
-                        dispatch(getMyConnetionRequest({ token: localStorage.getItem("token") }));
-                        dispatch(whatAreMyConnection({ token: localStorage.getItem("token") }));
+                        dispatch(
+                          getMyConnetionRequest({
+                            token: localStorage.getItem("token"),
+                          })
+                        );
+                        dispatch(
+                          whatAreMyConnection({
+                            token: localStorage.getItem("token"),
+                          })
+                        );
                       });
                     }}
                     className={styles.connectedButton}
@@ -83,7 +96,7 @@ export default function MyConnections() {
 
           <h3>My Network</h3>
 
-          {authState.connections.length === 0 && <p>No connections yet</p>}
+          {authState.connections?.length === 0 && <p>No connections yet</p>}
 
           {authState.connections.map((conn) => {
             const user = conn.user;

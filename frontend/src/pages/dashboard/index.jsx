@@ -35,6 +35,7 @@ export default function Dashboard() {
   const [fileContent, setfileContent] = useState();
   const [openMenuPostId, setOpenMenuPostId] = useState(null);
   const [openImage, setOpenImage] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -43,7 +44,9 @@ export default function Dashboard() {
     await dispatch(getAllPosts());
     setPostContent("");
     setfileContent();
+    setMediaPreview(null);
   };
+
 
   useEffect(() => {
     if (authState.TokenIsThere) {
@@ -75,20 +78,49 @@ export default function Dashboard() {
                   name=""
                   id=""
                 ></textarea>
+
+                <input
+                  // onChange={(e) => setfileContent(e.target.files[0])}
+                  type="file"
+                  hidden
+                  id="fileUpload"
+                  accept="image/*,video/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    setfileContent(file);
+                    setMediaPreview(URL.createObjectURL(file));
+                  }}
+                />
+                {postContent.length > 0 && (
+                  <div onClick={handleUpload} className={styles.uploadButton}>
+                    Post
+                  </div>
+                )}
                 <label htmlFor="fileUpload">
                   <div className={styles.Fab}>
                     <PlusIcon />
                   </div>
                 </label>
-                <input
-                  onChange={(e) => setfileContent(e.target.files[0])}
-                  type="file"
-                  hidden
-                  id="fileUpload"
-                />
-                {postContent.length > 0 && (
-                  <div onClick={handleUpload} className={styles.uploadButton}>
-                    Post
+
+                {mediaPreview && (
+                  <div className={styles.mediaPreviewContainer}>
+                    <img
+                      src={mediaPreview}
+                      className={styles.mediaPreview}
+                      alt="preview"
+                    />
+
+                    <button
+                      className={styles.removeMedia}
+                      onClick={() => {
+                        setfileContent(null);
+                        setMediaPreview(null);
+                      }}
+                    >
+                      ✕
+                    </button>
                   </div>
                 )}
               </div>
@@ -183,7 +215,7 @@ export default function Dashboard() {
                             <div
                               className={styles.singleOption_optionsContainer}
                             >
-                             <ShareIcon/>
+                              <ShareIcon />
                             </div>
                           </div>
                           {post.userId._id == authState.user.userId._id && (

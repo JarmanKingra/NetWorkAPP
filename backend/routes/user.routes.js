@@ -9,6 +9,7 @@ const {
   downloadProfile,
   sendConnectionRequest,
   getMyConnectionsRequests,
+  getMySentRequests,
   whatAreMyConnection,
   acceptConnectionRequest,
   getAllUserProfiles
@@ -41,6 +42,7 @@ router.route("/get_any_user_profile").get(get_user_profile_user_based_on_usernam
 router.route("/update_profile_data").post(updateProfileData);
 router.route("/downloadResume").get(downloadProfile);
 router.route("/send_connetion_request").post(sendConnectionRequest);
+router.route("/my_sent_requests").post(getMySentRequests);
 router.route("/get_My_Connection_Requests").get(getMyConnectionsRequests);
 router.route("/what_Are_My_Connection").get(whatAreMyConnection);
 router.route("/accept_Connection_Request").post(acceptConnectionRequest);

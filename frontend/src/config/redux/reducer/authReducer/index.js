@@ -3,6 +3,7 @@ import {
   getAboutUser,
   getAllUsers,
   getMyConnetionRequest,
+  getMySentRequests,
   loginUser,
   registerUser,
   whatAreMyConnection,
@@ -19,6 +20,7 @@ const initialState = {
   profileFetched: false,
   connections: [],
   pendingRequests: [],
+  sentRequests: [],
   all_users: [],
   all_profiles_fetched: false,
 };
@@ -107,6 +109,9 @@ const authSlice = createSlice({
       })
       .addCase(whatAreMyConnection.rejected, (state, action) => {
         state.message = action.payload;
+      })
+      .addCase(getMySentRequests.fulfilled, (state, action) => {
+        state.sentRequests = action.payload || [];
       });
   },
 });
