@@ -31,17 +31,54 @@ const createPost = async (req, res) => {
   }
 };
 
+// const getAllPosts = async (req, res) => {
+//   try {
+//     const posts = await Post.find().populate(
+//       "userId",
+//       "name username email profilePicture"
+//     );
+//     return res.json({ posts });
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
+
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate(
-      "userId",
-      "name username email profilePicture"
-    );
+    const posts = await Post.aggregate([
+      {
+        $lookup: {
+          from: "comments",       // Mongo collection name
+          localField: "_id",      // Post _id
+          foreignField: "postId", // Comment.postId
+          as: "comments",
+        },
+      },
+      {
+        $addFields: {
+          commentsCount: { $size: "$comments" },
+        },
+      },
+      {
+        $project: {
+          comments: 0, // remove full comments array
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+
+    // populate user info AFTER aggregation
+    await User.populate(posts, {
+      path: "userId",
+      select: "name username profilePicture",
+    });
+
     return res.json({ posts });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 const deletePost = async (req, res) => {
   const { token, postId } = req.body;

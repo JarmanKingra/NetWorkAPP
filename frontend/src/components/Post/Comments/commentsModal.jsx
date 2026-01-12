@@ -1,15 +1,36 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "@/config";
-import styles from "../../../pages/dashboard/index.module.css"
+import styles from "../../../pages/dashboard/index.module.css";
 import { getComments, postComment } from "@/config/redux/action/postAction";
+import ButtonSpinner from "@/components/loaders/loading";
 
 export default function CommentsModal({ post, onClose }) {
   const dispatch = useDispatch();
   const { postId, comments } = post;
   const [commentText, setCommentText] = useState("");
   const [expandedComments, setExpandedComments] = useState({});
+  const [isPosting, setIsPosting] = useState(false);
   const Max_length = 180;
+
+  const handleCommentUpload = async () => {
+    if (isPosting) return;
+
+    try {
+      setIsPosting(true);
+      await dispatch(
+        postComment({
+          postId,
+          body: commentText,
+        }),
+      );
+      await dispatch(getComments({ postId }));
+    } finally {
+      setCommentText("")
+      setIsPosting(false);
+    }
+  };
+
   return (
     <div onClick={onClose} className={styles.commentsContainer}>
       <div
@@ -19,6 +40,7 @@ export default function CommentsModal({ post, onClose }) {
         className={styles.allCommentsContainer}
       >
         {comments.length === 0 && <p>No comments yet</p>}
+        {comments.length != 0 && <p style={{paddingBottom: "1rem"}}>All Comments</p>}
 
         {comments.length != 0 && (
           <div className={styles.allCommentsContainerr}>
@@ -69,21 +91,15 @@ export default function CommentsModal({ post, onClose }) {
             placeholder="comment"
             onChange={(e) => setCommentText(e.target.value)}
           />
-          <div
-            onClick={async () => {
-              await dispatch(
-                postComment({
-                  postId,
-                  body: commentText,
-                }),
-                setCommentText("")
-              );
-              await dispatch(getComments({ postId }));
-            }}
+          {commentText.length > 0 && (
+            <div
+            onClick={handleCommentUpload}
             className={styles.postCommentContainer_commentBtn}
           >
-            <p>Comment</p>
+            {isPosting ? <ButtonSpinner text="Posting..." /> : "Comment"}
           </div>
+          )}
+          
         </div>
       </div>
     </div>

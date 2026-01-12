@@ -4,7 +4,6 @@ import {
   getAllUsers,
 } from "@/config/redux/action/authAction";
 import {
-  createPost,
   getAllPosts,
   getComments,
   incrementLikes,
@@ -22,31 +21,18 @@ import CommentsModal from "@/components/Post/Comments/commentsModal";
 import {
   CommentIcon,
   LikeIcon,
-  PlusIcon,
   ShareIcon,
 } from "@/components/SvgIcons/DashBoardSvgs";
+import CreatePostModal from "@/components/Post/CreatePostModal/createPostModal";
 
 export default function Dashboard() {
   const authState = useSelector((state) => state.auth);
-
   const postState = useSelector((state) => state.posts);
-
-  const [postContent, setPostContent] = useState("");
-  const [fileContent, setfileContent] = useState();
   const [openMenuPostId, setOpenMenuPostId] = useState(null);
   const [openImage, setOpenImage] = useState(null);
-  const [mediaPreview, setMediaPreview] = useState(null);
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 
   const dispatch = useDispatch();
-
-  const handleUpload = async () => {
-    await dispatch(createPost({ file: fileContent, body: postContent }));
-    await dispatch(getAllPosts());
-    setPostContent("");
-    setfileContent();
-    setMediaPreview(null);
-  };
-
 
   useEffect(() => {
     if (authState.TokenIsThere) {
@@ -57,6 +43,7 @@ export default function Dashboard() {
       dispatch(getAllUsers());
     }
   }, [authState.TokenIsThere]);
+  console.log(postState.posts);
 
   if (authState.user) {
     return (
@@ -64,65 +51,16 @@ export default function Dashboard() {
         <DashboardLayout>
           <div className={styles.scrollComponent}>
             <div className={styles.wrapper}>
-              <div className={styles.createPostContainer}>
+              <div
+                className={styles.fakeCreatePost}
+                onClick={() => setIsCreatePostOpen(true)}
+              >
                 <img
                   className={styles.userProfile}
-                  width={200}
                   src={`${BASE_URL}/${authState.user.userId.profilePicture}`}
                   alt=""
                 />
-                <textarea
-                  onChange={(e) => setPostContent(e.target.value)}
-                  value={postContent}
-                  className={styles.textAreaOfContent}
-                  name=""
-                  id=""
-                ></textarea>
-
-                <input
-                  // onChange={(e) => setfileContent(e.target.files[0])}
-                  type="file"
-                  hidden
-                  id="fileUpload"
-                  accept="image/*,video/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-
-                    setfileContent(file);
-                    setMediaPreview(URL.createObjectURL(file));
-                  }}
-                />
-                {postContent.length > 0 && (
-                  <div onClick={handleUpload} className={styles.uploadButton}>
-                    Post
-                  </div>
-                )}
-                <label htmlFor="fileUpload">
-                  <div className={styles.Fab}>
-                    <PlusIcon />
-                  </div>
-                </label>
-
-                {mediaPreview && (
-                  <div className={styles.mediaPreviewContainer}>
-                    <img
-                      src={mediaPreview}
-                      className={styles.mediaPreview}
-                      alt="preview"
-                    />
-
-                    <button
-                      className={styles.removeMedia}
-                      onClick={() => {
-                        setfileContent(null);
-                        setMediaPreview(null);
-                      }}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                )}
+                <div className={styles.fakeInput}>Start a post</div>
               </div>
 
               <div className={styles.postsContainer}>
@@ -211,6 +149,7 @@ export default function Dashboard() {
                                   await dispatch(getAllPosts());
                                 }}
                               />
+                              <p>{post.commentsCount}</p>
                             </div>
                             <div
                               className={styles.singleOption_optionsContainer}
@@ -261,6 +200,16 @@ export default function Dashboard() {
               isImageOpen={true}
               onCloseImage={() => setOpenImage(null)}
               openPostImage={openImage}
+            />
+          )}
+
+          {isCreatePostOpen && (
+            <CreatePostModal
+              onClose={() => setIsCreatePostOpen(false)}
+              onPostCreated={async () => {
+                await dispatch(getAllPosts());
+                setIsCreatePostOpen(false);
+              }}
             />
           )}
         </DashboardLayout>
