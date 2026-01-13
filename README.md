@@ -3,42 +3,30 @@
 A full-stack social networking application inspired by LinkedIn.
 It allows users to create profiles, View other user's Profile, connect with others, and showcase their professional journey.
 
+
 ✨ Features
 
 👤 User Authentication – Sign up, log in, Token-based handling
-
 📝 Profile Management – Update profile picture, bio, education, and work history
-
-🖼️ Posts – Create posts with text/media, view recent activity
-
+🖼️ Posts – Create posts with text/media Engagement - comment and Likes on Post.
 💬 Connections – Send, accept, and manage connection requests
-
 📜 Dynamic Feed – View your posts and activities in real-time
-
 ⚙️ Responsive UI – Web-first, Also responsive for Mobile and clean style design
 
 🛠️ Tech Stack
 
-Frontend:
-
+Frontend -----------------
 React (Next.js)
-
 Redux Toolkit (State Management)
-
 CSS Modules
 
-Backend:
-
+Backend -----------------
 Node.js + Express
-
 MongoDB + Mongoose
+Custom bcrypt & crypto based token Authentication
 
-JWT Authentication
-
-Other:
-
+Other -------------------
 Axios (API calls)
-
 Multer (file uploads)
 
 📂 Project Structure
@@ -57,29 +45,24 @@ NetworkAPP/
 └── README.md
 
 ⚡ Getting Started
-Prerequisites
 
+Prerequisites -------------------
 Node.js (>= 18)
-
 MongoDB installed or Mongo Atlas account
 
-Installation
-
+Installation -------------------
 Clone repo
-
 git clone https://github.com/JarmanKingra/NetWorkAPP
 cd networkapp
 
 
-Setup backend
-
+Setup backend -------------------
 cd backend
 npm install
 npm run dev
 
 
-Setup frontend
-
+Setup frontend -------------------
 cd frontend
 npm install
 npm run dev
@@ -88,38 +71,20 @@ npm run dev
 Open http://localhost:3000
  in your browser 🎉
 
-🔑 Environment Variables
-
+🔑 Environment Variables -------------------
 Create .env files in both frontend/ and backend/ folders.
-
 Backend (/backend/.env):
-
 PORT= yourPort
 MONGO_URI= your_mongodb_connection_string
 
 
 
-🚀 Deployment
-
+🚀 Deployment -------------------
 You can deploy:
-
 Frontend → Vercel
-
 Backend → Render
  or [Heroku]
-
 Database → MongoDB Atlas
-
-🤝 Contribution
 
 Contributions are welcome!
 
-Fork repo
-
-Create feature branch (git checkout -b feature/new-feature)
-
-Commit changes (git commit -m "Add feature")
-
-Push branch (git push origin feature/new-feature)
-
-Open Pull Request
