@@ -31,26 +31,14 @@ const createPost = async (req, res) => {
   }
 };
 
-// const getAllPosts = async (req, res) => {
-//   try {
-//     const posts = await Post.find().populate(
-//       "userId",
-//       "name username email profilePicture"
-//     );
-//     return res.json({ posts });
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
-
 const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.aggregate([
       {
         $lookup: {
-          from: "comments",       // Mongo collection name
-          localField: "_id",      // Post _id
-          foreignField: "postId", // Comment.postId
+          from: "comments",       
+          localField: "_id",      
+          foreignField: "postId",
           as: "comments",
         },
       },
@@ -61,13 +49,13 @@ const getAllPosts = async (req, res) => {
       },
       {
         $project: {
-          comments: 0, // remove full comments array
+          comments: 0, 
         },
       },
       { $sort: { createdAt: -1 } },
     ]);
 
-    // populate user info AFTER aggregation
+   
     await User.populate(posts, {
       path: "userId",
       select: "name username profilePicture",
@@ -78,7 +66,6 @@ const getAllPosts = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 
 const deletePost = async (req, res) => {
   const { token, postId } = req.body;
@@ -229,6 +216,7 @@ const get_user_profile_user_based_on_username = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 module.exports = {
   activeCheck,
   createPost,
