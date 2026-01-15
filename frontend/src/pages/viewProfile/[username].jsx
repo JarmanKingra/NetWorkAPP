@@ -14,6 +14,7 @@ import {
   whatAreMyConnection,
 } from "@/config/redux/action/authAction";
 import WorkHistory from "@/components/Profile/WorkHistory/workHistory";
+import PostImageOpen from "@/components/Post/postImage/postImageOpen";
 export default function ViewProfilePage({ userProfile }) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function ViewProfilePage({ userProfile }) {
   const [userPosts, setUserPosts] = useState([]);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [relationship, setRelationship] = useState("NONE");
+  const [isImageOpen, setIsImageOpen] = useState(null);
 
   const getUsersPost = async () => {
     await dispatch(getAllPosts());
@@ -98,8 +100,10 @@ export default function ViewProfilePage({ userProfile }) {
         <div className={styles.container}>
           <div className={styles.backDropContainer}>
             <img
+              className={styles.profileContainerPicture}
               src={`${BASE_URL}/${userProfile.userId.profilePicture}`}
               alt=""
+              onClick={() => setIsImageOpen(`${BASE_URL}/${userProfile.userId.profilePicture}`)}
             />
           </div>
 
@@ -192,6 +196,13 @@ export default function ViewProfilePage({ userProfile }) {
           </div>
           <WorkHistory work={userProfile.pastWork} />
         </div>
+        {isImageOpen && (
+          <PostImageOpen
+            isImageOpen
+            onCloseImage={() => setIsImageOpen(null)}
+            openPostImage={isImageOpen}
+          />
+        )}
       </DashboardLayout>
     </UserLayout>
   );

@@ -1,4 +1,4 @@
-import styles from "../../../pages/profile/index.module.css"
+import styles from "../../../pages/profile/index.module.css";
 import { EditPencilIcon } from "@/components/SvgIcons/profileSvgs";
 
 export default function ProfileHeader({
@@ -6,16 +6,22 @@ export default function ProfileHeader({
   isEditable = false,
   onEditClick,
   rightSlot,
-}) {
+}) 
+{
   return (
+
+
     <div className={styles.profileContainer_details}>
       <div className={styles.profileContainer_profileInfo}>
         <div style={{ flex: "0.8" }}>
           <p className={styles.nameEdit}>{profile.userId.name}</p>
 
           <div className={styles.HeadLineContainer}>
-            {profile.bio.length == 0 ? 
-            <p className={styles.HeadLine}>No TagLine added</p> : <p className={styles.HeadLine}>{profile.bio}</p>}
+            {profile.bio.length == 0 ? (
+              <p className={styles.HeadLine}>No TagLine added</p>
+            ) : (
+              <p className={styles.HeadLine}>{profile.bio}</p>
+            )}
           </div>
         </div>
 

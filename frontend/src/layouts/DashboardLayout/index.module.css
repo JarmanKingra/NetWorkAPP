@@ -94,6 +94,15 @@
   box-shadow: -2px 0 5px rgba(0,0,0,0.5);
 }
 
+.topProfilesHeading{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid white;
+}
+
 
 .homeContainer_extraContainer::-webkit-scrollbar {
   width: 6px;

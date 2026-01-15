@@ -24,6 +24,7 @@ import {
   ShareIcon,
 } from "@/components/SvgIcons/DashBoardSvgs";
 import CreatePostModal from "@/components/Post/CreatePostModal/createPostModal";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const authState = useSelector((state) => state.auth);
@@ -31,8 +32,11 @@ export default function Dashboard() {
   const [openMenuPostId, setOpenMenuPostId] = useState(null);
   const [openImage, setOpenImage] = useState(null);
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  
+
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     if (authState.TokenIsThere) {
@@ -69,7 +73,9 @@ export default function Dashboard() {
                     <div key={post._id} className={styles.singleCard}>
                       <div className={styles.singleCard_profileContainer}>
                         <div className={styles.postInfo}>
-                          <div className={styles.postInfoPicAndName}>
+                          <div className={styles.postInfoPicAndName}
+                          onClick={() => router.push(`/viewProfile/${post.userId.username}`)}
+                          >
                             <img
                               className={styles.profilePicture}
                               src={`${BASE_URL}/${post.userId.profilePicture}`}
@@ -102,7 +108,7 @@ export default function Dashboard() {
                             </div>
                           </div>
 
-                          <p style={{ paddingTop: "1.3rem" }}>{post.body}</p>
+                          <p className={styles.postBody} style={{ paddingTop: "1.3rem" }}>{post.body}</p>
 
                           {post.media && (
                             <div className={styles.singleCard_image}>

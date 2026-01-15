@@ -4,6 +4,7 @@ import { BASE_URL } from "@/config";
 import styles from "../../../pages/dashboard/index.module.css";
 import { getComments, postComment } from "@/config/redux/action/postAction";
 import ButtonSpinner from "@/components/loaders/loading";
+import { useRouter } from "next/navigation";
 
 export default function CommentsModal({ post, onClose }) {
   const dispatch = useDispatch();
@@ -12,6 +13,8 @@ export default function CommentsModal({ post, onClose }) {
   const [expandedComments, setExpandedComments] = useState({});
   const [isPosting, setIsPosting] = useState(false);
   const Max_length = 180;
+
+  const router = useRouter();
 
   const handleCommentUpload = async () => {
     if (isPosting) return;
@@ -50,9 +53,13 @@ export default function CommentsModal({ post, onClose }) {
               return (
                 <div className={styles.singleComment} key={comment._id}>
                   <div className={styles.singleComment_profileContainer}>
-                    <img src={`${BASE_URL}/${comment.userId.profilePicture}`} />
+                    <img src={`${BASE_URL}/${comment.userId.profilePicture}`} 
+                     onClick={() => router.push(`/viewProfile/${comment.userId.username}`)}
+                    />
                     <div>
-                      <p className={styles.commentName}>
+                      <p className={styles.commentName}
+                      onClick={() => router.push(`/viewProfile/${comment.userId.username}`)}
+                      >
                         {comment.userId.name}
                       </p>
                       <p className={styles.commentUserName}>

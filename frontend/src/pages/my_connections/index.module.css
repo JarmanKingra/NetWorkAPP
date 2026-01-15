@@ -6,11 +6,42 @@
   margin-right: 0.8rem;
 }
 
+.switchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.switchOption {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.switchOption:hover {
+  background-color: #76787a;
+}
+
+.switchOption.active {
+  background-color: #0a66c2;
+  color: #fff;
+}
+
+
 .sectionTitle {
-  font-size: 1.1rem;
+  font-family: sans-serif !important; 
+  font-size: 1.2rem;
+  letter-spacing: 1px;
   font-weight: 600;
-  color: #e5e7eb;
-  margin-bottom: 0.5rem;
+  color: #5682da;
+  margin-top: 1rem;
 }
 
 .fullEmptyState {
@@ -23,8 +54,8 @@
 
 
 .emptyText {
-  font-size: 0.9rem;
-  color: #9ca3af;
+  font-size: 0.8rem;
+  color: #66696d;
   padding-left: 0.2rem;
 }
 

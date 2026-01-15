@@ -22,7 +22,7 @@ export default function Discover() {
 
   return (
     <UserLayout>
-      <DashboardLayout>
+      <DashboardLayout hideRight>
         <div>
           <h1></h1>
           <div className={styles.allUserProfile}>

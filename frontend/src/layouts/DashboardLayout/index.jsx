@@ -95,13 +95,14 @@ export default function DashboardLayout({ children, hideRight = false  }) {
                 />
               </svg>
 
-              <p>Connections</p>
+              <p>Network</p>
             </div>
           </div>
           <div className={styles.homeContainer_feedContainer}>{children}</div>
 
          {!hideRight && (
           <div className={styles.homeContainer_extraContainer}>
+            <div className={styles.topProfilesHeading}>Top Profiles</div>
             {authState.all_profiles_fetched &&
               authState.all_users.map((profile) => (
                 <div
